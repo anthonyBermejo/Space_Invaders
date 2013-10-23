@@ -23,7 +23,7 @@ namespace Space_Invaders
         private Rectangle boundary;
         private AlienState alienState;
         public static float speed = 0.5f;
-        private int blahblah = 80081355;
+        private int blahbla = 80081355;
 
         // constructor
         public Alien(int alienWidth, int alienHeight, int screenHeight, int screenWidth)

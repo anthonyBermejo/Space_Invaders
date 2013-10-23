@@ -14,7 +14,7 @@ namespace Space_Invaders
     /// </summary>
     class HighScore
     {
-        private const string FILENAME = @"score.txt";
+        private const string FILENAME = @"highscore.txt";
 
         //Constructor
         public HighScore()
@@ -28,14 +28,18 @@ namespace Space_Invaders
         /// <returns>Value of the highscore</returns>
         public int ReadHighScore()
         {
-            int highScore;
+            int highScore = 0;
 
             using (StreamReader streamR = new StreamReader(new FileStream(FILENAME, FileMode.OpenOrCreate, FileAccess.Read)))
             {
-                String tempString = "";
+                String tempString = null;
                 tempString = streamR.ReadLine();
-                tempString = tempString.Substring(0,tempString.IndexOf(','));
-                Int32.TryParse(tempString, out highScore);
+
+                if (tempString != null)
+                {
+                    tempString = tempString.Substring(4);
+                    Int32.TryParse(tempString, out highScore);
+                }
             }
 
             return highScore;
@@ -49,7 +53,7 @@ namespace Space_Invaders
         {
             using (StreamWriter streamW = new StreamWriter(new FileStream(FILENAME, FileMode.OpenOrCreate, FileAccess.Write)))
             {
-                streamW.WriteLine(highScore + ",AAA");
+                streamW.WriteLine("AAA," + highScore);
             }
         }
     }

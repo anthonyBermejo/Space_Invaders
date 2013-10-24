@@ -18,7 +18,7 @@ namespace Space_Invaders
     /// Represents an AlienSprite which is a wrapper class of the Alien class.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 23/10/2012
+    /// Version - 23/10/2012 - v1.0
     /// </summary>
     public class AlienSprite : Microsoft.Xna.Framework.DrawableGameComponent
     {

@@ -17,7 +17,7 @@ namespace Space_Invaders
     /// An instance of an alien squad, consisting of multiple AlienSprite instances.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 23/10/2013
+    /// Version - 23/10/2013 - v1.0
     /// </summary>
     /// 
 
@@ -49,7 +49,9 @@ namespace Space_Invaders
         private int motionCtr; //Used to delay time between switching images for aliens
         private int currentListPos; //Keeps track of position in alien picture lists
         private Texture2D alienTexture1;
+        private List<Texture2D> alienMotion1;
         private List<Texture2D> alienMotion2;
+        private List<Texture2D> alienMotion3;
         private Texture2D alienTexture2;
         private Texture2D alienTexture3;
 
@@ -70,15 +72,31 @@ namespace Space_Invaders
 
             currentListPos = 0;
             motionCtr = 0;
-            alienTexture1 = game.Content.Load<Texture2D>("spaceship1");
+
+            //Sets spaceship motion pictures
+            alienMotion1 = new List<Texture2D>();
+            for (int i = 0; i < 2; i++)
+            {
+                alienMotion1.Add(game.Content.Load<Texture2D>("spaceship" + (i + 1)));
+            }
+            alienTexture1 = alienMotion1[0];
+
             //Set bug motion pictures
             alienMotion2 = new List<Texture2D>();
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 2; i++)
             {
                 alienMotion2.Add(game.Content.Load<Texture2D>("bug" + (i + 1)));
             }
             alienTexture2 = alienMotion2[0];
-            alienTexture3 = game.Content.Load<Texture2D>("flyingsaucer1");
+
+            //Set flyingsaucer motion pictures
+            alienMotion3 = new List<Texture2D>();
+            for (int i = 0; i < 2; i++)
+            {
+                alienMotion3.Add(game.Content.Load<Texture2D>("flyingsaucer" + (i + 1)));
+            }
+            alienTexture3 = alienMotion3[0];
+
             laser.AlienCollision += killAlien;
             killedCount = 0;
             difficulty = 
@@ -111,13 +129,20 @@ namespace Space_Invaders
             {
                 //Iterate through list
                 currentListPos++;
-                if (currentListPos > 3)
+                if (currentListPos > 1)
                     currentListPos = 0;
 
-                //Set image for all aliens of this type
+                //Set image for all aliens of each type
+                alienTexture1 = alienMotion1[currentListPos];
                 alienTexture2 = alienMotion2[currentListPos];
+                alienTexture3 = alienMotion3[currentListPos];
                 for (int ctr = 0; ctr < alienSquad.GetLength(1); ctr++)
+                {
+                    alienSquad[0, ctr].SetTexture(alienTexture1);
                     alienSquad[1, ctr].SetTexture(alienTexture2);
+                    alienSquad[2, ctr].SetTexture(alienTexture3);
+                }
+
 
                 //Reset motion counter delay
                 motionCtr = 0;
@@ -328,7 +353,6 @@ namespace Space_Invaders
                 ((AlienSprite)killedAlien).SetHitPoints(((AlienSprite)killedAlien).GetHitPoints() - 1);
                 // ***********************ADD HIT ANIMATION CODING HERE**************************
                 ((AlienSprite)killedAlien).SetTexture(game.Content.Load<Texture2D>("satellite1"));
-                //test test test
             }
 
             

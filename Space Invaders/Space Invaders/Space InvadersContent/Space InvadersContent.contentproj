@@ -112,20 +112,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="bug3.png">
-      <Name>bug3</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="bug4.png">
-      <Name>bug4</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="flyingsaucer2.png">
       <Name>flyingsaucer2</Name>
       <Importer>TextureImporter</Importer>

@@ -10,7 +10,7 @@ namespace Space_Invaders
     /// Represents an Alien instance
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 23/10/2013
+    /// Version - 23/10/2013 - v1.0
     /// </summary>
     public class Alien
     {

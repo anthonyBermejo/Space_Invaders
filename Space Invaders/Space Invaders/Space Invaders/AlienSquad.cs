@@ -328,6 +328,7 @@ namespace Space_Invaders
                 ((AlienSprite)killedAlien).SetHitPoints(((AlienSprite)killedAlien).GetHitPoints() - 1);
                 // ***********************ADD HIT ANIMATION CODING HERE**************************
                 ((AlienSprite)killedAlien).SetTexture(game.Content.Load<Texture2D>("satellite1"));
+                //test test test
             }
 
             

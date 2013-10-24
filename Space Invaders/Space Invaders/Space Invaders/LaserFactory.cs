@@ -30,7 +30,7 @@ namespace Space_Invaders
         private Texture2D imageLaser;
         private ProjectileSprite projectile;
         private TimeSpan previousLaunchTime = new TimeSpan();
-        private TimeSpan tolerance = TimeSpan.FromMilliseconds(50);
+        private TimeSpan tolerance = TimeSpan.FromMilliseconds(360);
         private AlienSquad alienSquad;
         private MothershipSprite mothership;
         public event AlienCollision AlienCollision;
@@ -76,13 +76,18 @@ namespace Space_Invaders
         protected override bool checkCollision(ProjectileSprite laser)
         {
             bool collision = false;
+            int pts = 0;
 
             for (int row = 0; row < alienSquad.getAlienRowCount(); row++)
                 for (int col = 0; col < alienSquad.getAlienColumnCount(); col++)
                     if (laser.GetBoundary().Intersects(alienSquad[row, col].GetBoundary()))
                         if (alienSquad[row, col].GetAlienState() == AlienState.ACTIVE)
                         {
-                            onAlienCollision(alienSquad[row, col], 10 + (alienSquad.getAlienRowCount() - 1 - row) * 10);
+                            // Only gives points if Alien dies, on higher difficulties multiple hits will not award points
+                            if (alienSquad[row, col].GetHitPoints() == 1)
+                                pts = 10 + (alienSquad.getAlienRowCount() - 1 - row) * 10;
+
+                            onAlienCollision(alienSquad[row, col], pts);
                             collision = true;
                             return collision;
                         }

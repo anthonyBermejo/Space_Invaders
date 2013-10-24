@@ -17,7 +17,7 @@ namespace Space_Invaders
     /// An instance of an alien squad, consisting of multiple AlienSprite instances.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 25/05/2013
+    /// Version - 23/10/2013
     /// </summary>
     /// 
 
@@ -54,7 +54,7 @@ namespace Space_Invaders
         private Texture2D alienTexture3;
 
         // Constructor
-        public AlienSquad(Game game, int screenWidth, int screenHeight, BombFactory bomb, LaserFactory laser, MothershipSprite mothershipSprite)
+        public AlienSquad(Game game, int screenWidth, int screenHeight, BombFactory bomb, LaserFactory laser, MothershipSprite mothershipSprite, int difficulty)
             : base(game)
         {
             this.game = game;
@@ -62,6 +62,7 @@ namespace Space_Invaders
             this.screenHeight = screenHeight;
             this.bomb = bomb;
             this.mothershipSprite = mothershipSprite;
+            this.difficulty = difficulty;
             dir = Direction.LEFT;
             alienWidth = game.Content.Load<Texture2D>("spaceship1").Width;
             alienHeight = game.Content.Load<Texture2D>("spaceship1").Height;
@@ -80,7 +81,7 @@ namespace Space_Invaders
             alienTexture3 = game.Content.Load<Texture2D>("flyingsaucer1");
             laser.AlienCollision += killAlien;
             killedCount = 0;
-            difficulty = 1;
+            difficulty = 
             level = 1;
             aLaser = laser;
             
@@ -150,11 +151,11 @@ namespace Space_Invaders
             // Determines the graphical image that the Alien will take
             for (int ctr = 0; ctr < alienSquad.GetLength(1); ctr++)
             {
-                alienSquad[0, ctr] = new AlienSprite(game, alienTexture1);
+                alienSquad[0, ctr] = new AlienSprite(game, alienTexture1, difficulty);
                 alienSquad[0, ctr].Initialize();
-                alienSquad[1, ctr] = new AlienSprite(game, alienTexture2);
+                alienSquad[1, ctr] = new AlienSprite(game, alienTexture2, difficulty);
                 alienSquad[1, ctr].Initialize();
-                alienSquad[2, ctr] = new AlienSprite(game, alienTexture3);
+                alienSquad[2, ctr] = new AlienSprite(game, alienTexture3, difficulty);
                 alienSquad[2, ctr].Initialize();
             }
 
@@ -291,6 +292,10 @@ namespace Space_Invaders
             return alienSquad.GetLength(0);
         }
 
+        /// <summary>
+        /// Returns the integer value of the current level
+        /// </summary>
+        /// <returns>Current level</returns>
         public int getLevel()
         {
             return level;
@@ -303,17 +308,29 @@ namespace Space_Invaders
         /// <param name="killedAlien">The killed Alien from which the collision was detected on.</param>
         private void killAlien(DrawableGameComponent killedAlien, int points)
         {
-            ((AlienSprite)killedAlien).SetAlienState(AlienState.INACTIVE);
-            killedCount++;
-            //Increases speed of squad once a certain number are killed
-            if ((killedCount % 8) == 0)
-                Alien.IncreaseSpeed();
-            //Resets squad if all are killed
-            if (killedCount == alienSquad.Length)
-                resetAlienSquad();
-            //Spawns mothership once a certain number are killed
-            if (killedCount == (alienSquad.Length / 2))
-                mothershipSprite.SetSpawnMother(true);
+            if (((AlienSprite)killedAlien).GetHitPoints() == 1)
+            {
+                ((AlienSprite)killedAlien).SetAlienState(AlienState.INACTIVE);
+                killedCount++;
+                //Increases speed of squad once a certain number are killed
+                if ((killedCount % 8) == 0)
+                    Alien.IncreaseSpeed();
+                //Resets squad if all are killed
+                if (killedCount == alienSquad.Length)
+                    resetAlienSquad();
+                //Spawns mothership once a certain number are killed
+                if (killedCount == (alienSquad.Length / 2))
+                    mothershipSprite.SetSpawnMother(true);
+            }
+
+            else
+            {
+                ((AlienSprite)killedAlien).SetHitPoints(((AlienSprite)killedAlien).GetHitPoints() - 1);
+                // ***********************ADD HIT ANIMATION CODING HERE**************************
+                ((AlienSprite)killedAlien).SetTexture(game.Content.Load<Texture2D>("satellite1"));
+            }
+
+            
 
         }
 

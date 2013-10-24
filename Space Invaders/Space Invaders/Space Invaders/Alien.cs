@@ -10,7 +10,7 @@ namespace Space_Invaders
     /// Represents an Alien instance
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 27/05/2013
+    /// Version - 23/10/2013
     /// </summary>
     public class Alien
     {
@@ -19,18 +19,20 @@ namespace Space_Invaders
         private int alienHeight;
         private int screenHeight;
         private int screenWidth;
+        private int hitPoints;
         private Vector2 position;
         private Rectangle boundary;
         private AlienState alienState;
         public static float speed = 0.5f;
 
         // constructor
-        public Alien(int alienWidth, int alienHeight, int screenHeight, int screenWidth)
+        public Alien(int alienWidth, int alienHeight, int screenHeight, int screenWidth, int hitPoints)
         {
             this.alienWidth = alienWidth;
             this.alienHeight = alienHeight;
             this.screenHeight = screenHeight;
             this.screenWidth = screenWidth;
+            this.hitPoints = hitPoints;
             alienState = AlienState.ACTIVE;
         }
 
@@ -72,6 +74,15 @@ namespace Space_Invaders
         }
 
         /// <summary>
+        /// Returns the current hitpoints of the Alien
+        /// </summary>
+        /// <returns>Alien hitpoints</returns>
+        public int GetHitPoints()
+        {
+            return hitPoints;
+        }
+
+        /// <summary>
         /// Increases the speed of alienSquad (by 0.5).
         /// </summary>
         public static void IncreaseSpeed()
@@ -106,6 +117,11 @@ namespace Space_Invaders
         public void SetAlienState(AlienState state)
         {
             this.alienState = state;
+        }
+
+        public void SetHitPoints(int hp)
+        {
+            this.hitPoints = hp;
         }
 
         /// <summary>

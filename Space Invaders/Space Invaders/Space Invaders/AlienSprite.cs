@@ -18,22 +18,25 @@ namespace Space_Invaders
     /// Represents an AlienSprite which is a wrapper class of the Alien class.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 29/03/2012
+    /// Version - 23/10/2012
     /// </summary>
     public class AlienSprite : Microsoft.Xna.Framework.DrawableGameComponent
     {
         // instance variable declaration
         private Alien alien;
+        private int difficulty; // Difficulty level
+        private int hitPoints; // Alien hitpoints based on difficulty level
         private SpriteBatch spriteBatch;
         private Texture2D imageAlien;
         private Game game;
 
         // Constructor
-        public AlienSprite(Game game, Texture2D imageAlien)
+        public AlienSprite(Game game, Texture2D imageAlien, int difficulty)
             : base(game)
         {
             this.game = game;
             this.imageAlien = imageAlien;
+            this.difficulty = difficulty;
         }
 
         /// <summary>
@@ -53,7 +56,8 @@ namespace Space_Invaders
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            alien = new Alien(imageAlien.Width, imageAlien.Height, GraphicsDevice.Viewport.Height, GraphicsDevice.Viewport.Width);
+            hitPoints = difficulty; //Assigned for clarity
+            alien = new Alien(imageAlien.Width, imageAlien.Height, GraphicsDevice.Viewport.Height, GraphicsDevice.Viewport.Width, hitPoints);
             base.LoadContent();
         }
 
@@ -99,6 +103,15 @@ namespace Space_Invaders
             return alien.GetBoundary();
         }
 
+        /// <summary>
+        /// Calls the Alien class' GetHitpoints method
+        /// </summary>
+        /// <returns>Alien's current hitpoints</returns>
+        public int GetHitPoints()
+        {
+            return alien.GetHitPoints();
+        }
+
         public Vector2 GetPosition()
         {
             return alien.GetPosition();
@@ -120,6 +133,15 @@ namespace Space_Invaders
         public void SetAlienState(AlienState state)
         {
             alien.SetAlienState(state);
+        }
+
+        /// <summary>
+        /// Calls the Alien class' SetHitpoints method.
+        /// </summary>
+        /// <param name="hp"></param>
+        public void SetHitPoints(int hp)
+        {
+            alien.SetHitPoints(hp);
         }
 
         /// <summary>

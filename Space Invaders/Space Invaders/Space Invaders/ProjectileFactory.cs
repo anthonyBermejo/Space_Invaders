@@ -17,7 +17,7 @@ namespace Space_Invaders
     /// Abstract class that represents factories which will specialize in creating and managing projectiles.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 29/03/2012
+    /// Version - 23/10/2012
     /// </summary>
     public abstract class ProjectileFactory : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -64,8 +64,7 @@ namespace Space_Invaders
             {
                 bullets[ctr].Update(gameTime);
                 if (checkCollision(bullets[ctr]))
-                    //bullets.Remove(bullets[ctr]);
-                    ;
+                    bullets.Remove(bullets[ctr]);
                 else if (bullets[ctr].GetPosition().Y > screenHeight || bullets[ctr].GetPosition().Y < 0)
                 {
                     bullets[ctr].Dispose();

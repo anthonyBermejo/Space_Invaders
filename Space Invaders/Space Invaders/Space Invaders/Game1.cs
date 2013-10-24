@@ -15,7 +15,7 @@ namespace Space_Invaders
     /// This is the main type for your game
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 25/05/2013
+    /// Version - 23/10/2013
     /// </summary>
     /// 
 
@@ -31,6 +31,7 @@ namespace Space_Invaders
         private LaserFactory laser;
         private BombFactory bomb;
         private ScoreSprite score;
+        private int difficulty; // Represents the difficulty stage
         private int screenWidth;
         private int screenHeight;
         private bool paused = false;
@@ -57,11 +58,14 @@ namespace Space_Invaders
         /// </summary>
         protected override void Initialize()
         {
+            setDifficulty(2); // Set to 1 until game menu is designed
+            difficulty = getDifficulty();
+
             laser = new LaserFactory(this, graphics.PreferredBackBufferHeight);
             playerSprite = new PlayerSprite(this, laser);
             bomb = new BombFactory(this, graphics.PreferredBackBufferHeight, playerSprite);
             mothershipSprite = new MothershipSprite(this, laser);
-            alienSquad = new AlienSquad(this, screenWidth, screenHeight, bomb, laser, mothershipSprite);
+            alienSquad = new AlienSquad(this, screenWidth, screenHeight, bomb, laser, mothershipSprite, difficulty);
             score = new ScoreSprite(this, bomb, laser, alienSquad);
             laser.SetAlienSquad(alienSquad);
             laser.SetMothership(mothershipSprite);
@@ -140,6 +144,24 @@ namespace Space_Invaders
             }
 
             base.Draw(gameTime);
+        }
+
+        /// <summary>
+        /// Returns the integer representing the current difficulty level
+        /// </summary>
+        /// <returns>Difficulty level</returns>
+        public int getDifficulty()
+        {
+            return difficulty;
+        }
+
+        /// <summary>
+        /// Sets the difficulty level
+        /// </summary>
+        /// <param name="difficulty"></param>
+        public void setDifficulty(int difficulty)
+        {
+            this.difficulty = difficulty;
         }
 
         private void BeginPause(bool UserInitiated)

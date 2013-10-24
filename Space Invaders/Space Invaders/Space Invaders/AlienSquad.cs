@@ -17,7 +17,7 @@ namespace Space_Invaders
     /// An instance of an alien squad, consisting of multiple AlienSprite instances.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 23/10/2013 - v1.0
+    /// Version - 23/10/2013 - v1.01
     /// </summary>
     /// 
 
@@ -368,6 +368,10 @@ namespace Space_Invaders
         private void resetAlienSquad()
         {
             Alien.speed = 0.5f;
+            for (int i = 0; i < alienSquad.GetLength(0); i++)
+                for(int j = 0; j < alienSquad.GetLength(1); j++)
+                    alienSquad[i, j].SetHitPoints(difficulty);
+
             level++;
             alienLevel++;
             killedCount = 0;

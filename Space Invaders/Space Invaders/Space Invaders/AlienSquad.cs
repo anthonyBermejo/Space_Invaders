@@ -48,12 +48,18 @@ namespace Space_Invaders
         private LaserFactory aLaser;
         private int motionCtr; //Used to delay time between switching images for aliens
         private int currentListPos; //Keeps track of position in alien picture lists
-        private Texture2D alienTexture1;
         private List<Texture2D> alienMotion1;
         private List<Texture2D> alienMotion2;
         private List<Texture2D> alienMotion3;
+        private List<Texture2D> hitAlienMotion1;
+        private List<Texture2D> hitAlienMotion2;
+        private List<Texture2D> hitAlienMotion3;
+        private Texture2D alienTexture1;
         private Texture2D alienTexture2;
         private Texture2D alienTexture3;
+        private Texture2D hitAlienTexture1;
+        private Texture2D hitAlienTexture2;
+        private Texture2D hitAlienTexture3;
 
         // Constructor
         public AlienSquad(Game game, int screenWidth, int screenHeight, BombFactory bomb, LaserFactory laser, MothershipSprite mothershipSprite, int difficulty)
@@ -97,6 +103,27 @@ namespace Space_Invaders
             }
             alienTexture3 = alienMotion3[0];
 
+            //Sets hit spaceship motion pictures
+            hitAlienMotion1 = new List<Texture2D>();
+            for (int i = 0; i < 2; i++)
+            {
+                hitAlienMotion1.Add(game.Content.Load<Texture2D>("hit_spaceship" + (i + 1)));
+            }
+
+            //Set hit bug motion pictures
+            hitAlienMotion2 = new List<Texture2D>();
+            for (int i = 0; i < 2; i++)
+            {
+                hitAlienMotion2.Add(game.Content.Load<Texture2D>("hit_bug" + (i + 1)));
+            }
+
+            //Set hit flyingsaucer motion pictures
+            hitAlienMotion3 = new List<Texture2D>();
+            for (int i = 0; i < 2; i++)
+            {
+                hitAlienMotion3.Add(game.Content.Load<Texture2D>("hit_flyingsaucer" + (i + 1)));
+            }
+
             laser.AlienCollision += killAlien;
             killedCount = 0;
             difficulty = 
@@ -136,13 +163,28 @@ namespace Space_Invaders
                 alienTexture1 = alienMotion1[currentListPos];
                 alienTexture2 = alienMotion2[currentListPos];
                 alienTexture3 = alienMotion3[currentListPos];
+
+                hitAlienTexture1 = hitAlienMotion1[currentListPos];
+                hitAlienTexture2 = hitAlienMotion2[currentListPos];
+                hitAlienTexture3 = hitAlienMotion3[currentListPos];
+
                 for (int ctr = 0; ctr < alienSquad.GetLength(1); ctr++)
                 {
-                    alienSquad[0, ctr].SetTexture(alienTexture1);
-                    alienSquad[1, ctr].SetTexture(alienTexture2);
-                    alienSquad[2, ctr].SetTexture(alienTexture3);
-                }
+                    if (alienSquad[0,ctr].GetHitPoints() == 1)
+                        alienSquad[0, ctr].SetTexture(hitAlienTexture1);
+                    else
+                        alienSquad[0, ctr].SetTexture(alienTexture1);
 
+                    if (alienSquad[1, ctr].GetHitPoints() == 1)
+                        alienSquad[1, ctr].SetTexture(hitAlienTexture2);
+                    else
+                        alienSquad[1, ctr].SetTexture(alienTexture2);
+
+                    if (alienSquad[2, ctr].GetHitPoints() == 1)
+                        alienSquad[2, ctr].SetTexture(hitAlienTexture3);
+                    else
+                        alienSquad[2, ctr].SetTexture(alienTexture3);
+                }
 
                 //Reset motion counter delay
                 motionCtr = 0;
@@ -333,6 +375,7 @@ namespace Space_Invaders
         /// <param name="killedAlien">The killed Alien from which the collision was detected on.</param>
         private void killAlien(DrawableGameComponent killedAlien, int points)
         {
+
             if (((AlienSprite)killedAlien).GetHitPoints() == 1)
             {
                 ((AlienSprite)killedAlien).SetAlienState(AlienState.INACTIVE);
@@ -351,12 +394,7 @@ namespace Space_Invaders
             else
             {
                 ((AlienSprite)killedAlien).SetHitPoints(((AlienSprite)killedAlien).GetHitPoints() - 1);
-                // ***********************ADD HIT ANIMATION CODING HERE**************************
-                ((AlienSprite)killedAlien).SetTexture(game.Content.Load<Texture2D>("satellite1"));
             }
-
-            
-
         }
 
         protected void onGameOver()

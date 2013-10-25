@@ -90,7 +90,7 @@ namespace Space_Invaders
                             onAlienCollision(alienSquad[row, col], pts);
                             collision = true;
 
-                            //remove laser after hits alien
+                            //remove laser after it hits alien
                             laser.Dispose();
                             bullets.Remove(laser);
 
@@ -102,7 +102,7 @@ namespace Space_Invaders
                 onMothershipCollision(mothership, 100);
                 collision = true;
 
-                // remove laser after hits alien
+                // remove laser after it hits alien
                 laser.Dispose();
                 bullets.Remove(laser);
 

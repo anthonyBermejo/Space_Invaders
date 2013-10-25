@@ -48,10 +48,10 @@ namespace Space_Invaders
         private LaserFactory aLaser;
         private int motionCtr; //Used to delay time between switching images for aliens
         private int currentListPos; //Keeps track of position in alien picture lists
-        private Texture2D alienTexture1;
         private List<Texture2D> alienMotion1;
         private List<Texture2D> alienMotion2;
         private List<Texture2D> alienMotion3;
+        private Texture2D alienTexture1;
         private Texture2D alienTexture2;
         private Texture2D alienTexture3;
 

@@ -51,9 +51,12 @@ namespace Space_Invaders
         private List<Texture2D> alienMotion1;
         private List<Texture2D> alienMotion2;
         private List<Texture2D> alienMotion3;
+<<<<<<< HEAD
         private List<Texture2D> hitAlienMotion1;
         private List<Texture2D> hitAlienMotion2;
         private List<Texture2D> hitAlienMotion3;
+=======
+>>>>>>> 2dfdea4d54a4097c2018be9716c08e8a44fa7f5a
         private Texture2D alienTexture1;
         private Texture2D alienTexture2;
         private Texture2D alienTexture3;
@@ -396,7 +399,6 @@ namespace Space_Invaders
 
             else
             {
-                // remove a hit point from alien
                 ((AlienSprite)killedAlien).SetHitPoints(((AlienSprite)killedAlien).GetHitPoints() - 1);
             }
         }

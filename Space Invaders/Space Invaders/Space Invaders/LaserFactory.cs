@@ -89,6 +89,11 @@ namespace Space_Invaders
 
                             onAlienCollision(alienSquad[row, col], pts);
                             collision = true;
+
+                            //remove laser after hits alien
+                            laser.Dispose();
+                            bullets.Remove(laser);
+
                             return collision;
                         }
             if (laser.GetBoundary().Intersects(mothership.GetBoundary()))
@@ -96,6 +101,11 @@ namespace Space_Invaders
             {
                 onMothershipCollision(mothership, 100);
                 collision = true;
+
+                // remove laser after hits alien
+                laser.Dispose();
+                bullets.Remove(laser);
+
                 return collision;
             }
 

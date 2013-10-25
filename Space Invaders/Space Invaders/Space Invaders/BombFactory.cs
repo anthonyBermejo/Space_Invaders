@@ -108,7 +108,6 @@ namespace Space_Invaders
         public void SpawnProtection()
         {
             bullets.RemoveRange(0, bullets.Count);
-
         }
     }
 }

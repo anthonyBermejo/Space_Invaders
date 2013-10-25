@@ -17,7 +17,7 @@ namespace Space_Invaders
     /// An instance of an alien squad, consisting of multiple AlienSprite instances.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 23/10/2013 - v1.01
+    /// Version - 25/10/2013 - v1.02
     /// </summary>
     /// 
 
@@ -177,10 +177,13 @@ namespace Space_Invaders
             for (int ctr = 0; ctr < alienSquad.GetLength(1); ctr++)
             {
                 alienSquad[0, ctr] = new AlienSprite(game, alienTexture1, difficulty);
+                alienSquad[0, ctr].SetAlienType(AlienType.SPACESHIP);
                 alienSquad[0, ctr].Initialize();
                 alienSquad[1, ctr] = new AlienSprite(game, alienTexture2, difficulty);
+                alienSquad[0, ctr].SetAlienType(AlienType.BUG);
                 alienSquad[1, ctr].Initialize();
                 alienSquad[2, ctr] = new AlienSprite(game, alienTexture3, difficulty);
+                alienSquad[0, ctr].SetAlienType(AlienType.FLYINGSAUCER);
                 alienSquad[2, ctr].Initialize();
             }
 

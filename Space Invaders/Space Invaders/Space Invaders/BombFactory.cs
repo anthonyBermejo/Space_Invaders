@@ -16,7 +16,7 @@ namespace Space_Invaders
     /// that are launched by an AlienSquad object.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 29/03/2012
+    /// Version - 25/10/2012 - v1.0
     /// </summary>
     public class BombFactory : ProjectileFactory
     {

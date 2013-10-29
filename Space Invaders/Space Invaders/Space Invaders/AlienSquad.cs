@@ -222,10 +222,10 @@ namespace Space_Invaders
                 alienSquad[0, ctr].SetAlienType(AlienType.SPACESHIP);
                 alienSquad[0, ctr].Initialize();
                 alienSquad[1, ctr] = new AlienSprite(game, alienTexture2, difficulty);
-                alienSquad[0, ctr].SetAlienType(AlienType.BUG);
+                alienSquad[1, ctr].SetAlienType(AlienType.BUG);
                 alienSquad[1, ctr].Initialize();
                 alienSquad[2, ctr] = new AlienSprite(game, alienTexture3, difficulty);
-                alienSquad[0, ctr].SetAlienType(AlienType.FLYINGSAUCER);
+                alienSquad[2, ctr].SetAlienType(AlienType.FLYINGSAUCER);
                 alienSquad[2, ctr].Initialize();
             }
 
@@ -379,9 +379,11 @@ namespace Space_Invaders
         private void killAlien(DrawableGameComponent killedAlien, int points)
         {
 
-            if (((AlienSprite)killedAlien).GetHitPoints() == 1)
+            AlienSprite alien = ((AlienSprite)killedAlien);
+
+            if (alien.GetHitPoints() == 1)
             {
-                ((AlienSprite)killedAlien).SetAlienState(AlienState.INACTIVE);
+                alien.SetAlienState(AlienState.INACTIVE);
                 killedCount++;
                 //Increases speed of squad once a certain number are killed
                 if ((killedCount % 8) == 0)
@@ -396,8 +398,24 @@ namespace Space_Invaders
 
             else
             {
+
                 // remove a hit point from alien
-                ((AlienSprite)killedAlien).SetHitPoints(((AlienSprite)killedAlien).GetHitPoints() - 1);
+                alien.SetHitPoints(alien.GetHitPoints() - 1);
+
+                // check what type of alien was hit, change texture to a hit sprite alien of that type
+                if (alien.GetAlienType() == AlienType.SPACESHIP)
+                {
+                    alien.SetTexture(hitAlienTexture1);
+                }
+                else if (alien.GetAlienType() == AlienType.BUG)
+                {
+                    alien.SetTexture(hitAlienTexture2);
+                }
+                else if (alien.GetAlienType() == AlienType.FLYINGSAUCER)
+                {
+                    alien.SetTexture(hitAlienTexture3);
+                }
+
             }
         }
 

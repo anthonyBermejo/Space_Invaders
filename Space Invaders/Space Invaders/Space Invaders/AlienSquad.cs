@@ -17,7 +17,7 @@ namespace Space_Invaders
     /// An instance of an alien squad, consisting of multiple AlienSprite instances.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 25/10/2013 - v1.02
+    /// Version - 30/10/2013 - v1.03
     /// </summary>
     /// 
 
@@ -26,7 +26,7 @@ namespace Space_Invaders
     public class AlienSquad : Microsoft.Xna.Framework.DrawableGameComponent
     {
         // instance variable declaration
-        private Game game;
+        private Game1 game;
         private AlienSprite[,] alienSquad;
         private MothershipSprite mothershipSprite;
         private Direction dir;
@@ -62,7 +62,7 @@ namespace Space_Invaders
         private Texture2D hitAlienTexture3;
 
         // Constructor
-        public AlienSquad(Game game, int screenWidth, int screenHeight, BombFactory bomb, LaserFactory laser, MothershipSprite mothershipSprite, int difficulty)
+        public AlienSquad(Game1 game, int screenWidth, int screenHeight, BombFactory bomb, LaserFactory laser, MothershipSprite mothershipSprite)
             : base(game)
         {
             this.game = game;
@@ -70,7 +70,7 @@ namespace Space_Invaders
             this.screenHeight = screenHeight;
             this.bomb = bomb;
             this.mothershipSprite = mothershipSprite;
-            this.difficulty = difficulty;
+            difficulty = game.getDifficulty();
             dir = Direction.LEFT;
             alienWidth = game.Content.Load<Texture2D>("spaceship1").Width;
             alienHeight = game.Content.Load<Texture2D>("spaceship1").Height;
@@ -79,50 +79,7 @@ namespace Space_Invaders
             currentListPos = 0;
             motionCtr = 0;
 
-            //Sets spaceship motion pictures
-            alienMotion1 = new List<Texture2D>();
-            for (int i = 0; i < 2; i++)
-            {
-                alienMotion1.Add(game.Content.Load<Texture2D>("spaceship" + (i + 1)));
-            }
-            alienTexture1 = alienMotion1[0];
-
-            //Set bug motion pictures
-            alienMotion2 = new List<Texture2D>();
-            for (int i = 0; i < 2; i++)
-            {
-                alienMotion2.Add(game.Content.Load<Texture2D>("bug" + (i + 1)));
-            }
-            alienTexture2 = alienMotion2[0];
-
-            //Set flyingsaucer motion pictures
-            alienMotion3 = new List<Texture2D>();
-            for (int i = 0; i < 2; i++)
-            {
-                alienMotion3.Add(game.Content.Load<Texture2D>("flyingsaucer" + (i + 1)));
-            }
-            alienTexture3 = alienMotion3[0];
-
-            //Sets hit spaceship motion pictures
-            hitAlienMotion1 = new List<Texture2D>();
-            for (int i = 0; i < 2; i++)
-            {
-                hitAlienMotion1.Add(game.Content.Load<Texture2D>("hit_spaceship" + (i + 1)));
-            }
-
-            //Set hit bug motion pictures
-            hitAlienMotion2 = new List<Texture2D>();
-            for (int i = 0; i < 2; i++)
-            {
-                hitAlienMotion2.Add(game.Content.Load<Texture2D>("hit_bug" + (i + 1)));
-            }
-
-            //Set hit flyingsaucer motion pictures
-            hitAlienMotion3 = new List<Texture2D>();
-            for (int i = 0; i < 2; i++)
-            {
-                hitAlienMotion3.Add(game.Content.Load<Texture2D>("hit_flyingsaucer" + (i + 1)));
-            }
+            setAlienMotionPictures();
 
             laser.AlienCollision += killAlien;
             killedCount = 0;
@@ -152,51 +109,54 @@ namespace Space_Invaders
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Draw(GameTime gameTime)
         {
-            if (motionCtr == 30)
+            if (game.GetGameState() == Game1.GameState.Playing)
             {
-                //Iterate through list
-                currentListPos++;
-                if (currentListPos > 1)
-                    currentListPos = 0;
-
-                //Set image for all aliens of each type
-                alienTexture1 = alienMotion1[currentListPos];
-                alienTexture2 = alienMotion2[currentListPos];
-                alienTexture3 = alienMotion3[currentListPos];
-
-                hitAlienTexture1 = hitAlienMotion1[currentListPos];
-                hitAlienTexture2 = hitAlienMotion2[currentListPos];
-                hitAlienTexture3 = hitAlienMotion3[currentListPos];
-
-                for (int ctr = 0; ctr < alienSquad.GetLength(1); ctr++)
+                if (motionCtr == 30)
                 {
-                    if (alienSquad[0,ctr].GetHitPoints() == 1)
-                        alienSquad[0, ctr].SetTexture(hitAlienTexture1);
-                    else
-                        alienSquad[0, ctr].SetTexture(alienTexture1);
+                    //Iterate through list
+                    currentListPos++;
+                    if (currentListPos > 1)
+                        currentListPos = 0;
 
-                    if (alienSquad[1, ctr].GetHitPoints() == 1)
-                        alienSquad[1, ctr].SetTexture(hitAlienTexture2);
-                    else
-                        alienSquad[1, ctr].SetTexture(alienTexture2);
+                    //Set image for all aliens of each type
+                    alienTexture1 = alienMotion1[currentListPos];
+                    alienTexture2 = alienMotion2[currentListPos];
+                    alienTexture3 = alienMotion3[currentListPos];
 
-                    if (alienSquad[2, ctr].GetHitPoints() == 1)
-                        alienSquad[2, ctr].SetTexture(hitAlienTexture3);
-                    else
-                        alienSquad[2, ctr].SetTexture(alienTexture3);
+                    hitAlienTexture1 = hitAlienMotion1[currentListPos];
+                    hitAlienTexture2 = hitAlienMotion2[currentListPos];
+                    hitAlienTexture3 = hitAlienMotion3[currentListPos];
+
+                    for (int ctr = 0; ctr < alienSquad.GetLength(1); ctr++)
+                    {
+                        if (alienSquad[0, ctr].GetHitPoints() == 1)
+                            alienSquad[0, ctr].SetTexture(hitAlienTexture1);
+                        else
+                            alienSquad[0, ctr].SetTexture(alienTexture1);
+
+                        if (alienSquad[1, ctr].GetHitPoints() == 1)
+                            alienSquad[1, ctr].SetTexture(hitAlienTexture2);
+                        else
+                            alienSquad[1, ctr].SetTexture(alienTexture2);
+
+                        if (alienSquad[2, ctr].GetHitPoints() == 1)
+                            alienSquad[2, ctr].SetTexture(hitAlienTexture3);
+                        else
+                            alienSquad[2, ctr].SetTexture(alienTexture3);
+                    }
+
+                    //Reset motion counter delay
+                    motionCtr = 0;
                 }
 
-                //Reset motion counter delay
-                motionCtr = 0;
+                for (int ctr1 = 0; ctr1 < alienSquad.GetLength(0); ctr1++)
+                    for (int ctr2 = 0; ctr2 < alienSquad.GetLength(1); ctr2++)
+                    {
+                        if (alienSquad[ctr1, ctr2].GetAlienState() == AlienState.ACTIVE)
+                            alienSquad[ctr1, ctr2].Draw(gameTime);
+                    }
+                motionCtr++;
             }
-
-            for (int ctr1 = 0; ctr1 < alienSquad.GetLength(0); ctr1++)
-                for (int ctr2 = 0; ctr2 < alienSquad.GetLength(1); ctr2++)
-                {
-                    if (alienSquad[ctr1, ctr2].GetAlienState() == AlienState.ACTIVE)
-                        alienSquad[ctr1, ctr2].Draw(gameTime);
-                }
-            motionCtr++;
             base.Draw(gameTime);
         }
 
@@ -218,13 +178,13 @@ namespace Space_Invaders
             // Determines the graphical image that the Alien will take
             for (int ctr = 0; ctr < alienSquad.GetLength(1); ctr++)
             {
-                alienSquad[0, ctr] = new AlienSprite(game, alienTexture1, difficulty);
+                alienSquad[0, ctr] = new AlienSprite(game, alienTexture1);
                 alienSquad[0, ctr].SetAlienType(AlienType.SPACESHIP);
                 alienSquad[0, ctr].Initialize();
-                alienSquad[1, ctr] = new AlienSprite(game, alienTexture2, difficulty);
+                alienSquad[1, ctr] = new AlienSprite(game, alienTexture2);
                 alienSquad[1, ctr].SetAlienType(AlienType.BUG);
                 alienSquad[1, ctr].Initialize();
-                alienSquad[2, ctr] = new AlienSprite(game, alienTexture3, difficulty);
+                alienSquad[2, ctr] = new AlienSprite(game, alienTexture3);
                 alienSquad[2, ctr].SetAlienType(AlienType.FLYINGSAUCER);
                 alienSquad[2, ctr].Initialize();
             }
@@ -242,63 +202,67 @@ namespace Space_Invaders
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            fireTime = 120 / difficulty;
 
-            for (int ctr1 = 0; ctr1 < alienSquad.GetLength(0); ctr1++)
-                for (int ctr2 = 0; ctr2 < alienSquad.GetLength(1); ctr2++)
-                {
-                    switch (dir)
+            if (game.GetGameState() == Game1.GameState.Playing)
+            {
+                fireTime = 120 / difficulty;
+
+                for (int ctr1 = 0; ctr1 < alienSquad.GetLength(0); ctr1++)
+                    for (int ctr2 = 0; ctr2 < alienSquad.GetLength(1); ctr2++)
                     {
-                        case Direction.LEFT:
+                        switch (dir)
                         {
-                            if (alienSquad[ctr1, ctr2].GetAlienState() != AlienState.INACTIVE)
-                                if (!alienSquad[ctr1, ctr2].TryMove(dir))
+                            case Direction.LEFT:
                                 {
-                                    dir = Direction.DOWN;
-                                    previousDir = Direction.LEFT;
+                                    if (alienSquad[ctr1, ctr2].GetAlienState() != AlienState.INACTIVE)
+                                        if (!alienSquad[ctr1, ctr2].TryMove(dir))
+                                        {
+                                            dir = Direction.DOWN;
+                                            previousDir = Direction.LEFT;
+                                        }
+                                    break;
                                 }
-                            break;
-                        }
-                        case Direction.RIGHT:
-                        {
-                            if (alienSquad[ctr1, ctr2].GetAlienState() != AlienState.INACTIVE)
-                                if (!alienSquad[ctr1, ctr2].TryMove(dir))
+                            case Direction.RIGHT:
                                 {
-                                    dir = Direction.DOWN;
-                                    previousDir = Direction.RIGHT;
+                                    if (alienSquad[ctr1, ctr2].GetAlienState() != AlienState.INACTIVE)
+                                        if (!alienSquad[ctr1, ctr2].TryMove(dir))
+                                        {
+                                            dir = Direction.DOWN;
+                                            previousDir = Direction.RIGHT;
+                                        }
+                                    break;
                                 }
-                            break;
                         }
                     }
-                }
 
-            for (int ctr1 = 0; ctr1 < alienSquad.GetLength(0); ctr1++)
-                for (int ctr2 = 0; ctr2 < alienSquad.GetLength(1); ctr2++)
+                for (int ctr1 = 0; ctr1 < alienSquad.GetLength(0); ctr1++)
+                    for (int ctr2 = 0; ctr2 < alienSquad.GetLength(1); ctr2++)
+                    {
+                        alienSquad[ctr1, ctr2].Move(dir);
+                        if (alienSquad[ctr1, ctr2].GetAlienState() == AlienState.ACTIVE)
+                            if (alienSquad[ctr1, ctr2].GetBoundary().Bottom >= screenHeight)
+                                onGameOver();
+                    }
+
+                if (dir == Direction.DOWN)
                 {
-                    alienSquad[ctr1, ctr2].Move(dir);
-                    if (alienSquad[ctr1, ctr2].GetAlienState() == AlienState.ACTIVE)
-                        if (alienSquad[ctr1, ctr2].GetBoundary().Bottom >= screenHeight)
-                            onGameOver();
+                    if (previousDir == Direction.LEFT)
+                        dir = Direction.RIGHT;
+                    if (previousDir == Direction.RIGHT)
+                        dir = Direction.LEFT;
                 }
 
-            if (dir == Direction.DOWN)
-            {
-                if (previousDir == Direction.LEFT)
-                    dir = Direction.RIGHT;
-                if (previousDir == Direction.RIGHT)
-                    dir = Direction.LEFT;
-            }
-           
 
-            if (fireCap % fireTime == 0)
-            {
-                int squadRow = random.Next(0, alienSquad.GetLength(0));
-                int squadCol = random.Next(0, alienSquad.GetLength(1));
+                if (fireCap % fireTime == 0)
+                {
+                    int squadRow = random.Next(0, alienSquad.GetLength(0));
+                    int squadCol = random.Next(0, alienSquad.GetLength(1));
 
-                if (alienSquad[squadRow, squadCol].GetAlienState() != AlienState.INACTIVE)
-                    bomb.Launch(alienSquad[squadRow, squadCol].GetBoundary(), gameTime);
+                    if (alienSquad[squadRow, squadCol].GetAlienState() != AlienState.INACTIVE)
+                        bomb.Launch(alienSquad[squadRow, squadCol].GetBoundary(), gameTime);
+                }
+                fireCap++;
             }
-            fireCap++;
             base.Update(gameTime);
         }
 
@@ -448,6 +412,57 @@ namespace Space_Invaders
             mothershipSprite.RandomizeMothershipSpawn();
             mothershipSprite.SetAlienState(AlienState.ACTIVE);
             mothershipSprite.SetSpawnMother(false);
+        }
+
+        /// <summary>
+        /// Sets all the images cycles for each Alien type
+        /// </summary>
+        private void setAlienMotionPictures()
+        {
+            //Sets spaceship motion pictures
+            alienMotion1 = new List<Texture2D>();
+            for (int i = 0; i < 2; i++)
+            {
+                alienMotion1.Add(game.Content.Load<Texture2D>("spaceship" + (i + 1)));
+            }
+            alienTexture1 = alienMotion1[0];
+
+            //Set bug motion pictures
+            alienMotion2 = new List<Texture2D>();
+            for (int i = 0; i < 2; i++)
+            {
+                alienMotion2.Add(game.Content.Load<Texture2D>("bug" + (i + 1)));
+            }
+            alienTexture2 = alienMotion2[0];
+
+            //Set flyingsaucer motion pictures
+            alienMotion3 = new List<Texture2D>();
+            for (int i = 0; i < 2; i++)
+            {
+                alienMotion3.Add(game.Content.Load<Texture2D>("flyingsaucer" + (i + 1)));
+            }
+            alienTexture3 = alienMotion3[0];
+
+            //Sets hit spaceship motion pictures
+            hitAlienMotion1 = new List<Texture2D>();
+            for (int i = 0; i < 2; i++)
+            {
+                hitAlienMotion1.Add(game.Content.Load<Texture2D>("hit_spaceship" + (i + 1)));
+            }
+
+            //Set hit bug motion pictures
+            hitAlienMotion2 = new List<Texture2D>();
+            for (int i = 0; i < 2; i++)
+            {
+                hitAlienMotion2.Add(game.Content.Load<Texture2D>("hit_bug" + (i + 1)));
+            }
+
+            //Set hit flyingsaucer motion pictures
+            hitAlienMotion3 = new List<Texture2D>();
+            for (int i = 0; i < 2; i++)
+            {
+                hitAlienMotion3.Add(game.Content.Load<Texture2D>("hit_flyingsaucer" + (i + 1)));
+            }
         }
 
         /// <summary>

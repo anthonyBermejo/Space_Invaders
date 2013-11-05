@@ -144,6 +144,7 @@ namespace Space_Invaders
 
                 spriteBatch.End();
             }
+
             base.Draw(gameTime);
         }
 

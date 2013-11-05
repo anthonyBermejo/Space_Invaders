@@ -30,8 +30,10 @@ namespace Space_Invaders
         SpriteFont font; //Menu font
 
         List<string> menuItems = new List<string>();
-
         int selected = 0; //Highlighted menu item
+
+        private System.Timers.Timer timer = new System.Timers.Timer(250); //Create a timer to delay game start
+        
 
         public MainMenu(Game1 game) : base(game)
         {
@@ -49,6 +51,9 @@ namespace Space_Invaders
             
             //Padding between menu items
             padding = 3;
+
+            // Hook up event to timer
+            timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimedEvent);
         }
 
         public override void Initialize()
@@ -95,8 +100,10 @@ namespace Space_Invaders
                     switch (selected)
                     {
                         case 0:
-                            game.SetGameState(Game1.GameState.Playing);
-                            break;
+                            {
+                                timer.Start(); 
+                                break;
+                            }
                         case 1:
                             game.SetGameState(Game1.GameState.Exit);
                             break;
@@ -131,6 +138,12 @@ namespace Space_Invaders
         public bool CheckKeyboard(Keys key)
         {
             return (keyboard.IsKeyDown(key) && !prevKeyboard.IsKeyDown(key));
+        }
+
+        private void OnTimedEvent(object source, System.Timers.ElapsedEventArgs e)
+        {
+            game.SetGameState(Game1.GameState.Playing);
+            timer.Dispose();
         }
 
     }

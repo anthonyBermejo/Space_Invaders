@@ -17,7 +17,7 @@ namespace Space_Invaders
     /// Represents a PlayerSprite which is a wrapper class of the Player class.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 29/03/2012
+    /// Version - 31/10/2012 - v1.0
     /// </summary>
     public class PlayerSprite : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -25,14 +25,14 @@ namespace Space_Invaders
         private Player player;
         private SpriteBatch spriteBatch;
         private Texture2D imagePlayer;
-        private Game game;
+        private Game1 game;
         private LaserFactory laser;
         private KeyboardState oldState;
         private TimeSpan previousKeyTime = new TimeSpan();
         private TimeSpan tolerance = TimeSpan.FromMilliseconds(50);
 
         // Constructor
-        public PlayerSprite(Game game, LaserFactory laser)
+        public PlayerSprite(Game1 game, LaserFactory laser)
             : base(game)
         {
             this.laser = laser;
@@ -66,7 +66,10 @@ namespace Space_Invaders
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            checkInput(gameTime);
+            if (game.GetGameState() == Game1.GameState.Playing)
+            {
+                checkInput(gameTime);    
+            }
             base.Update(gameTime);
         }
 
@@ -76,9 +79,12 @@ namespace Space_Invaders
         /// <param name="gameTime">Provides a snapshot of timing values</param>
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
-            spriteBatch.Draw(imagePlayer, player.GetPosition(), Color.White);
-            spriteBatch.End();
+            if (game.GetGameState() == Game1.GameState.Playing)
+            {
+                spriteBatch.Begin();
+                spriteBatch.Draw(imagePlayer, player.GetPosition(), Color.White);
+                spriteBatch.End();
+            }
             base.Draw(gameTime);
         }
 

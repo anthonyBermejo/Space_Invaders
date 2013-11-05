@@ -18,7 +18,7 @@ namespace Space_Invaders
     /// Represents an AlienSprite which is a wrapper class of the Alien class.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 25/10/2012 - v1.01
+    /// Version - 31/10/2012 - v1.02
     /// </summary>
     public class AlienSprite : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -29,15 +29,15 @@ namespace Space_Invaders
         private AlienType alienType; // Type of Alien based on row number in AlienSquad array
         private SpriteBatch spriteBatch;
         private Texture2D imageAlien;
-        private Game game;
+        private Game1 game;
 
         // Constructor
-        public AlienSprite(Game game, Texture2D imageAlien, int difficulty)
+        public AlienSprite(Game1 game, Texture2D imageAlien)
             : base(game)
         {
             this.game = game;
             this.imageAlien = imageAlien;
-            this.difficulty = difficulty;
+            difficulty = game.getDifficulty();
         }
 
         /// <summary>

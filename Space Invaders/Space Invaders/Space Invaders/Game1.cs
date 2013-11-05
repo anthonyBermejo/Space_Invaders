@@ -24,6 +24,7 @@ namespace Space_Invaders
         //instance variable declaration
         private GraphicsDeviceManager graphics;
         public GamerServicesComponent GamerServices;
+        private MainMenu mainMenu;
         private SpriteBatch spriteBatch;
         private PlayerSprite playerSprite;
         private AlienSquad alienSquad;
@@ -38,6 +39,15 @@ namespace Space_Invaders
         private bool pauseKeyDown = false;
         private bool pausedForGuide = false;
         private SpriteFont font;
+
+        public enum GameState
+        {
+            MainMenu,
+            Paused,
+            Playing,
+            Exit
+        }
+        GameState currentGameState = GameState.MainMenu;
 
         //constructor
         public Game1()
@@ -58,6 +68,9 @@ namespace Space_Invaders
         /// </summary>
         protected override void Initialize()
         {
+            //Creates the main menu
+            mainMenu = new MainMenu(this);
+
             setDifficulty(2); // Set to 1 until game menu is designed
             difficulty = getDifficulty();
 
@@ -65,12 +78,14 @@ namespace Space_Invaders
             playerSprite = new PlayerSprite(this, laser);
             bomb = new BombFactory(this, graphics.PreferredBackBufferHeight, playerSprite);
             mothershipSprite = new MothershipSprite(this, laser);
-            alienSquad = new AlienSquad(this, screenWidth, screenHeight, bomb, laser, mothershipSprite, difficulty);
+            alienSquad = new AlienSquad(this, screenWidth, screenHeight, bomb, laser, mothershipSprite);
             score = new ScoreSprite(this, bomb, laser, alienSquad);
             laser.SetAlienSquad(alienSquad);
             laser.SetMothership(mothershipSprite);
 
             Components.Add(new GamerServicesComponent(this));
+            Components.Add(mainMenu);
+
             Components.Add(laser);
             Components.Add(bomb);
             Components.Add(playerSprite);
@@ -111,8 +126,28 @@ namespace Space_Invaders
             KeyboardState keyboardState = Keyboard.GetState();
 
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || currentGameState == GameState.Exit)
                 this.Exit();
+
+            // Updating playing state
+            switch (currentGameState)
+            {
+                case GameState.Playing:
+                    {
+                        
+                        break;
+                    }
+                case GameState.MainMenu:
+                    {
+                        break;
+                    }
+
+                case GameState.Paused: 
+                    { 
+                        break; 
+                    }
+
+            }
 
             // Check to see if the user has paused or unpaused
             if (!score.GetGameOver())
@@ -129,12 +164,38 @@ namespace Space_Invaders
         }
 
         /// <summary>
+        /// Returns the gameState from a set of possible enums
+        /// </summary>
+        /// <returns>The current state of the game</returns>
+        public GameState GetGameState()
+        {
+            return currentGameState; 
+            }
+
+        public void SetGameState(GameState gs)
+        {
+            currentGameState = gs;
+        }
+
+        /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
+
+            switch (currentGameState)
+            {
+                case GameState.Playing:
+                    {
+                        break;
+                    }
+                case GameState.MainMenu:
+                    {
+                        break;
+                    }
+            }
 
             if (paused)
             {

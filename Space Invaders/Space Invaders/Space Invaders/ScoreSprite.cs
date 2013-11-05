@@ -16,7 +16,7 @@ namespace Space_Invaders
     /// This is a game component that implements IUpdateable and IDrawable
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 24/05/2013
+    /// Version - 31/10/2013 - v1.0
     /// </summary>
     public class ScoreSprite : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -81,7 +81,9 @@ namespace Space_Invaders
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-                base.Update(gameTime);
+            if (game.GetGameState() == Game1.GameState.Playing)
+                ;
+            base.Update(gameTime);
         }
 
         /// <summary>
@@ -92,52 +94,56 @@ namespace Space_Invaders
         {
             int lifeSpacingX = screenWidth - 3 * (imagePlayer.Width + 5);
             int highScore = highScoreObject.ReadHighScore();
-            spriteBatch.Begin();
-
-            if (!gameOver)
+             if (game.GetGameState() == Game1.GameState.Playing)
             {
-                spriteBatch.DrawString(font, "SCORE: " + score, new Vector2(0, 0), Color.White);
-                spriteBatch.DrawString(font, "LIVES: ", new Vector2(screenWidth - 190, 0), Color.White);
-                spriteBatch.DrawString(font, "HIGH SCORE: " + highScore, new Vector2(310 , 0), Color.White);
-                spriteBatch.DrawString(font, "LEVEL: " + alienSquad.getLevel(), new Vector2(0, 20), Color.White);
+                 spriteBatch.Begin();
 
-                spriteBatch.Draw(imagePlayer, new Vector2(lifeSpacingX, 0), Color.White);
-
-                // If player has more than 3 lives the display changes to compress the display instead of having multiple little pictures
-                if (lives > 3)
+           
+                if (!gameOver)
                 {
-                    spriteBatch.DrawString(font," x " + lives, new Vector2(screenWidth - 85, 0), Color.White);   
-                }
-                else
-                {
+                    spriteBatch.DrawString(font, "SCORE: " + score, new Vector2(0, 0), Color.White);
+                    spriteBatch.DrawString(font, "LIVES: ", new Vector2(screenWidth - 190, 0), Color.White);
+                    spriteBatch.DrawString(font, "HIGH SCORE: " + highScore, new Vector2(310, 0), Color.White);
+                    spriteBatch.DrawString(font, "LEVEL: " + alienSquad.getLevel(), new Vector2(0, 20), Color.White);
 
-                    for (int i = 0; i < (lives - 1); i++)
+                    spriteBatch.Draw(imagePlayer, new Vector2(lifeSpacingX, 0), Color.White);
+
+                    // If player has more than 3 lives the display changes to compress the display instead of having multiple little pictures
+                    if (lives > 3)
                     {
-                        spriteBatch.Draw(imagePlayer, new Vector2(lifeSpacingX + imagePlayer.Width + 5, 0), Color.White);
-                        lifeSpacingX += imagePlayer.Width + 5;
+                        spriteBatch.DrawString(font, " x " + lives, new Vector2(screenWidth - 85, 0), Color.White);
+                    }
+                    else
+                    {
+
+                        for (int i = 0; i < (lives - 1); i++)
+                        {
+                            spriteBatch.Draw(imagePlayer, new Vector2(lifeSpacingX + imagePlayer.Width + 5, 0), Color.White);
+                            lifeSpacingX += imagePlayer.Width + 5;
+                        }
                     }
                 }
-            }
-            else
-            {
-                spriteBatch.DrawString(font, "GAME OVER", new Vector2((screenWidth / 2) - 50, screenHeight / 2 - 20), Color.White);
-
-                if (score <= highScore && !endOfGame)
-                {
-                    spriteBatch.DrawString(font, "HIGH SCORE: " + highScore, new Vector2((screenWidth / 2) - 90, screenHeight / 2), Color.White);
-                    spriteBatch.DrawString(font, "YOUR SCORE: " + score, new Vector2((screenWidth / 2) - 90, screenHeight / 2 + 20), Color.White);
-                }
                 else
                 {
-                    highScoreObject.WriteHighScore(score);
-                    spriteBatch.DrawString(font, "NEW HIGH SCORE: " + score, new Vector2((screenWidth / 2) - 107, (screenHeight / 2)), Color.White);
-                    endOfGame = true;
+                    spriteBatch.DrawString(font, "GAME OVER", new Vector2((screenWidth / 2) - 50, screenHeight / 2 - 20), Color.White);
+
+                    if (score <= highScore && !endOfGame)
+                    {
+                        spriteBatch.DrawString(font, "HIGH SCORE: " + highScore, new Vector2((screenWidth / 2) - 90, screenHeight / 2), Color.White);
+                        spriteBatch.DrawString(font, "YOUR SCORE: " + score, new Vector2((screenWidth / 2) - 90, screenHeight / 2 + 20), Color.White);
+                    }
+                    else
+                    {
+                        highScoreObject.WriteHighScore(score);
+                        spriteBatch.DrawString(font, "NEW HIGH SCORE: " + score, new Vector2((screenWidth / 2) - 107, (screenHeight / 2)), Color.White);
+                        endOfGame = true;
+                    }
+
+                    game.removeComponents();
                 }
 
-                game.removeComponents();
+                spriteBatch.End();
             }
-
-            spriteBatch.End();
             base.Draw(gameTime);
         }
 

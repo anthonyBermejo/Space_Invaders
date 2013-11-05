@@ -81,6 +81,7 @@
     <Compile Include="Direction.cs" />
     <Compile Include="HighScore.cs" />
     <Compile Include="LaserFactory.cs" />
+    <Compile Include="MainMenu.cs" />
     <Compile Include="Mothership.cs" />
     <Compile Include="MothershipSprite.cs" />
     <Compile Include="Player.cs" />

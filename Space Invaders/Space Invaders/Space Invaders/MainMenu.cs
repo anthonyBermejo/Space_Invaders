@@ -12,7 +12,7 @@ namespace Space_Invaders
     /// Class defining the main menu component of the game.
     /// 
     /// Author Patrick Nicoll
-    /// Version 31/10/2013 - v1.0
+    /// Version 5/11/2013 - v1.1
     /// </summary>
     public class MainMenu : Microsoft.Xna.Framework.DrawableGameComponent
     {

@@ -79,6 +79,7 @@
     <Compile Include="AlienType.cs" />
     <Compile Include="BombFactory.cs" />
     <Compile Include="Direction.cs" />
+    <Compile Include="GameOverMenu.cs" />
     <Compile Include="HighScore.cs" />
     <Compile Include="LaserFactory.cs" />
     <Compile Include="MainMenu.cs" />

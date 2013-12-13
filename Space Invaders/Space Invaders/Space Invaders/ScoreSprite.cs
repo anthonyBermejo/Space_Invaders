@@ -16,15 +16,16 @@ namespace Space_Invaders
     /// This is a game component that implements IUpdateable and IDrawable
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 31/10/2013 - v1.0
+    /// Version - 12/12/2013 - v1.1
     /// </summary>
     public class ScoreSprite : Microsoft.Xna.Framework.DrawableGameComponent
     {
         private int score;
+        private int highScore;
         private int lives;
         private int extraLifeAccumulator; // Resets to 0 after reaching a certain point amount, giving the player an extra life
         private bool gameOver = false;
-        private bool endOfGame = false;
+        private bool endOfGame = false; // When true the Game Over Menu will continue to show
         private SpriteFont font;
         private SpriteBatch spriteBatch;
         private Texture2D imagePlayer;
@@ -93,8 +94,8 @@ namespace Space_Invaders
         public override void Draw(GameTime gameTime)
         {
             int lifeSpacingX = screenWidth - 3 * (imagePlayer.Width + 5);
-            int highScore = highScoreObject.ReadHighScore();
-             if (game.GetGameState() == Game1.GameState.Playing)
+            highScore = highScoreObject.ReadHighScore();
+            if (game.GetGameState() == Game1.GameState.Playing)
             {
                  spriteBatch.Begin();
 
@@ -125,26 +126,17 @@ namespace Space_Invaders
                 }
                 else
                 {
-                    spriteBatch.DrawString(font, "GAME OVER", new Vector2((screenWidth / 2) - 50, screenHeight / 2 - 20), Color.White);
-
-                    if (score <= highScore && !endOfGame)
+                    if (score > highScore && endOfGame)
                     {
-                        spriteBatch.DrawString(font, "HIGH SCORE: " + highScore, new Vector2((screenWidth / 2) - 90, screenHeight / 2), Color.White);
-                        spriteBatch.DrawString(font, "YOUR SCORE: " + score, new Vector2((screenWidth / 2) - 90, screenHeight / 2 + 20), Color.White);
+                        highScoreObject.WriteHighScore(score);       
                     }
-                    else
-                    {
-                        highScoreObject.WriteHighScore(score);
-                        spriteBatch.DrawString(font, "NEW HIGH SCORE: " + score, new Vector2((screenWidth / 2) - 107, (screenHeight / 2)), Color.White);
-                        endOfGame = true;
-                    }
-
-                    game.removeComponents();
+                    endOfGame = true;//So the Game Over Menu will show
+                    game.SetGameState(Game1.GameState.GameOverMenu);
                 }
+                
 
                 spriteBatch.End();
             }
-
             base.Draw(gameTime);
         }
 
@@ -174,6 +166,24 @@ namespace Space_Invaders
 
             if (lives == 0)
                 gameOver = true;
+        }
+
+        /// <summary>
+        /// Returns the highscore
+        /// </summary>
+        /// <returns>Returns the highscore</returns>
+        public int GetHighScore()
+        {
+            return highScore;
+        }
+
+        /// <summary>
+        /// Returns the socre of the current game.
+        /// </summary>
+        /// <returns>Score of the game</returns>
+        public int GetScore()
+        {
+            return score;
         }
 
         /// <summary>

@@ -15,7 +15,7 @@ namespace Space_Invaders
     /// This is the main type for your game
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 23/10/2013 - v1.0
+    /// Version - 12/12/2013 - v1.1
     /// </summary>
     /// 
 
@@ -25,6 +25,7 @@ namespace Space_Invaders
         private GraphicsDeviceManager graphics;
         public GamerServicesComponent GamerServices;
         private MainMenu mainMenu;
+        private GameOverMenu gameOverMenu;
         private SpriteBatch spriteBatch;
         private PlayerSprite playerSprite;
         private AlienSquad alienSquad;
@@ -45,6 +46,7 @@ namespace Space_Invaders
             MainMenu,
             Paused,
             Playing,
+            GameOverMenu,
             Exit
         }
         GameState currentGameState = GameState.MainMenu;
@@ -71,6 +73,9 @@ namespace Space_Invaders
             //Creates the main menu
             mainMenu = new MainMenu(this);
 
+            //Creates the game over menu
+            gameOverMenu = new GameOverMenu(this);
+
             setDifficulty(2); // Set to 1 until game menu is designed
             difficulty = getDifficulty();
 
@@ -85,6 +90,7 @@ namespace Space_Invaders
 
             Components.Add(new GamerServicesComponent(this));
             Components.Add(mainMenu);
+            Components.Add(gameOverMenu);
 
             Components.Add(laser);
             Components.Add(bomb);
@@ -142,7 +148,7 @@ namespace Space_Invaders
                         break;
                     }
 
-                case GameState.Paused: 
+                case GameState.GameOverMenu: 
                     { 
                         break; 
                     }
@@ -161,6 +167,24 @@ namespace Space_Invaders
             {
                 base.Update(gameTime);
             }
+        }
+
+        /// <summary>
+        /// Acts as a handler to the GetHighScore method in ScoreSprite
+        /// </summary>
+        /// <returns>Highscore of the game</returns>
+        public int GetGameHighScore()
+        {
+            return score.GetHighScore();
+        }
+
+        /// <summary>
+        /// Acts as a handler to the GetScore method in ScoreSprite
+        /// </summary>
+        /// <returns>Score of the current game</returns>
+        public int GetGameScore()
+        {
+            return score.GetScore();
         }
 
         /// <summary>

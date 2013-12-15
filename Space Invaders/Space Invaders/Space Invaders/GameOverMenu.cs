@@ -36,6 +36,7 @@ namespace Space_Invaders
         private int score;
         private int highScore;
 
+        //NOTE: Keeping this incase of future need
         //private System.Timers.Timer timer = new System.Timers.Timer(250); //Create a timer to delay game start
 
 

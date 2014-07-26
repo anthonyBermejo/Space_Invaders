@@ -344,7 +344,10 @@ namespace Space_Invaders
 
             AlienSprite alien = ((AlienSprite)killedAlien);
 
-            if (alien.GetHitPoints() == 0)
+            // remove a hit point from alien
+            alien.SetHitPoints(alien.GetHitPoints() - 1);
+
+            if (alien.GetHitPoints() <= 0)
             {
                 alien.SetAlienState(AlienState.INACTIVE);
                 killedCount++;
@@ -360,10 +363,7 @@ namespace Space_Invaders
             }
 
             else
-            {
-                // remove a hit point from alien
-                alien.SetHitPoints(alien.GetHitPoints() - 1);
-                
+            {   
                 // check what type of alien was hit, change texture to a hit sprite alien of that type
                 if (alien.GetAlienType() == AlienType.SPACESHIP)
                 {

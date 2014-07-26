@@ -30,8 +30,8 @@ namespace Space_Invaders
         private Texture2D imageLaser;
         private ProjectileSprite projectile;
         private TimeSpan previousLaunchTime = new TimeSpan();
-        //private TimeSpan tolerance = TimeSpan.FromMilliseconds(360);
-        private TimeSpan tolerance = TimeSpan.FromMilliseconds(0);
+        private TimeSpan tolerance = TimeSpan.FromMilliseconds(360);
+        //private TimeSpan tolerance = TimeSpan.FromMilliseconds(0);
         private AlienSquad alienSquad;
         private MothershipSprite mothership;
         public event AlienCollision AlienCollision;

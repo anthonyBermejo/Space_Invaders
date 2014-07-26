@@ -27,6 +27,8 @@ namespace Space_Invaders
         private int colorFlashTimer;  //Used to time color flash effect on selected menu item 
         private int padding;
 
+        private Texture2D titleScreenImg;
+
         KeyboardState keyboard;
         KeyboardState prevKeyboard;
         SpriteFont font; //Menu font
@@ -45,7 +47,7 @@ namespace Space_Invaders
             screenWidth = graphics.PreferredBackBufferWidth;
 
             //Add each menu item to the list
-            menuItems.Add("Play");
+            menuItems.Add("New Game");
             menuItems.Add("Exit");
 
             //Initialize font color to white and flash timer to 0
@@ -68,7 +70,8 @@ namespace Space_Invaders
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            font = game.Content.Load<SpriteFont>("scoreFont");
+            font = game.Content.Load<SpriteFont>("menuFont");
+            titleScreenImg = game.Content.Load<Texture2D>("title-screen");
             base.LoadContent();
         }
 
@@ -125,6 +128,7 @@ namespace Space_Invaders
             if (game.GetGameState() == Game1.GameState.MainMenu)
             {
                 spriteBatch.Begin();
+                spriteBatch.Draw(titleScreenImg, new Vector2(0, 0), Color.White);
                 for (int i = 0; i < menuItems.Count; i++)
                 {
                     if (i == selected)
@@ -135,7 +139,7 @@ namespace Space_Invaders
                     else
                         color = Color.White;
                     spriteBatch.DrawString(font, menuItems[i], new Vector2((screenWidth / 2) - (font.MeasureString(menuItems[i]).X / 2),
-                         (screenHeight / 2) - (font.LineSpacing * menuItems.Count / 2) + ((font.LineSpacing + padding) * i)), color);
+                         ((screenHeight / 2) + 90) + (font.LineSpacing * menuItems.Count / 2) + ((font.LineSpacing + padding) * i)), color);
                 }
                 spriteBatch.End();
             }

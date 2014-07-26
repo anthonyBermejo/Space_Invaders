@@ -23,6 +23,8 @@ namespace Space_Invaders
         private SpriteBatch spriteBatch;
 
         private Color color;
+        private Color selectedColor;
+        private int colorFlashTimer; 
         private int padding;
 
         KeyboardState keyboard;
@@ -48,6 +50,7 @@ namespace Space_Invaders
 
             //Initialize font color to white
             color = Color.White;
+            colorFlashTimer = 0;
             
             //Padding between menu items
             padding = 3;
@@ -124,7 +127,10 @@ namespace Space_Invaders
                 for (int i = 0; i < menuItems.Count; i++)
                 {
                     if (i == selected)
-                        color = Color.Yellow;
+                    {
+                        FlashTimerControl();
+                        color = selectedColor;
+                    }
                     else
                         color = Color.White;
                     spriteBatch.DrawString(font, menuItems[i], new Vector2((screenWidth / 2) - (font.MeasureString(menuItems[i]).X / 2),
@@ -146,5 +152,20 @@ namespace Space_Invaders
             timer.Dispose();
         }
 
+        private void FlashTimerControl()
+        {
+            colorFlashTimer++;
+
+            // change color between yellow and white
+            if (colorFlashTimer % 20 == 0)
+            {
+                if (selectedColor == Color.Yellow)
+                    selectedColor = Color.White;
+                else
+                    selectedColor = Color.Yellow;
+
+                colorFlashTimer = 0;
+            }
+        }
     }
 }

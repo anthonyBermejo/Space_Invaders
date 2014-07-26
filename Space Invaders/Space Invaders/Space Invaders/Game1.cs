@@ -77,7 +77,6 @@ namespace Space_Invaders
             gameOverMenu = new GameOverMenu(this);
 
             setDifficulty(2); // Set to 1 until game menu is designed
-            difficulty = getDifficulty();
 
             laser = new LaserFactory(this, graphics.PreferredBackBufferHeight);
             playerSprite = new PlayerSprite(this, laser);

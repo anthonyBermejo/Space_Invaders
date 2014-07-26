@@ -83,7 +83,6 @@ namespace Space_Invaders
 
             laser.AlienCollision += killAlien;
             killedCount = 0;
-            difficulty = 
             level = 1;
             aLaser = laser;
             
@@ -155,6 +154,7 @@ namespace Space_Invaders
                         if (alienSquad[ctr1, ctr2].GetAlienState() == AlienState.ACTIVE)
                             alienSquad[ctr1, ctr2].Draw(gameTime);
                     }
+
                 motionCtr++;
             }
             base.Draw(gameTime);
@@ -189,8 +189,7 @@ namespace Space_Invaders
                 alienSquad[2, ctr].Initialize();
             }
 
-            drawAlienSquad(level);
-
+            drawAlienSquad();
             base.LoadContent();
         }
 
@@ -268,15 +267,8 @@ namespace Space_Invaders
 
         // Custom methods
 
-        private void drawAlienSquad(int level)
+        private void drawAlienSquad()
         {
-            // Resets the alien squad spawn to the start, allowing for other difficulty modifiers to come into play at higher levels.
-            if (level % 10 == 0)
-            {
-                alienLevel = 1;
-                difficulty++;
-            }
-
             // Calling the SetPosition method to set the position of each alien
             alienWidthSpacing = alienWidth * 3;
             alienSquad[0, 0].SetPosition(alienWidth, alienHeight * alienLevel);
@@ -345,7 +337,7 @@ namespace Space_Invaders
 
             AlienSprite alien = ((AlienSprite)killedAlien);
 
-            if (alien.GetHitPoints() == 1)
+            if (alien.GetHitPoints() == 0)
             {
                 alien.SetAlienState(AlienState.INACTIVE);
                 killedCount++;
@@ -362,10 +354,9 @@ namespace Space_Invaders
 
             else
             {
-
                 // remove a hit point from alien
                 alien.SetHitPoints(alien.GetHitPoints() - 1);
-
+                
                 // check what type of alien was hit, change texture to a hit sprite alien of that type
                 if (alien.GetAlienType() == AlienType.SPACESHIP)
                 {
@@ -380,6 +371,7 @@ namespace Space_Invaders
                     alien.SetTexture(hitAlienTexture3);
                 }
 
+                Console.Write(alien.GetHitPoints());
             }
         }
 
@@ -392,6 +384,8 @@ namespace Space_Invaders
         private void resetAlienSquad()
         {
             Alien.speed = 0.5f;
+
+
             for (int i = 0; i < alienSquad.GetLength(0); i++)
                 for(int j = 0; j < alienSquad.GetLength(1); j++)
                     alienSquad[i, j].SetHitPoints(difficulty);
@@ -399,8 +393,8 @@ namespace Space_Invaders
             level++;
             alienLevel++;
             killedCount = 0;
-            drawAlienSquad(level);
             setAlienSquadToActive();
+            drawAlienSquad();
             resetMothership();
         }
 
@@ -472,7 +466,9 @@ namespace Space_Invaders
         {
             for (int ctr1 = 0; ctr1 < alienSquad.GetLength(0); ctr1++)
                 for (int ctr2 = 0; ctr2 < alienSquad.GetLength(1); ctr2++)
+                {
                     alienSquad[ctr1, ctr2].SetAlienState(AlienState.ACTIVE);
+                }
         }
     }
 }

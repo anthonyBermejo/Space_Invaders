@@ -15,7 +15,7 @@ namespace Space_Invaders
     /// This is the main type for your game
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 12/12/2013 - v1.1
+    /// Version - 26/07/2014 - v1.2
     /// </summary>
     /// 
 

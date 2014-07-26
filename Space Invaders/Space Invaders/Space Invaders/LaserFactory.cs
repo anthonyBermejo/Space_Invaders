@@ -21,7 +21,7 @@ namespace Space_Invaders
     /// that are launched by a Player object.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 23/10/2013 - v1.0
+    /// Version - 26/07/2014 - v1.1
     /// </summary>
     public class LaserFactory : ProjectileFactory
     {

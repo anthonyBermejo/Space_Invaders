@@ -16,7 +16,7 @@ namespace Space_Invaders
     /// This is a game component that implements IUpdateable and IDrawable
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 12/12/2013 - v1.1
+    /// Version - 26/07/2014 - v1.2
     /// </summary>
     public class ScoreSprite : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -25,7 +25,7 @@ namespace Space_Invaders
         private int lives;
         private int extraLifeAccumulator; // Resets to 0 after reaching a certain point amount, giving the player an extra life
         private bool gameOver = false;
-        private bool endOfGame = false; // When true the Game Over Menu will continue to show
+        //private bool endOfGame = false; // When true the Game Over Menu will continue to show
         private SpriteFont font;
         private SpriteBatch spriteBatch;
         private Texture2D imagePlayer;
@@ -126,11 +126,11 @@ namespace Space_Invaders
                 }
                 else
                 {
-                    if (score > highScore && endOfGame)
+                    if (score > highScore)
                     {
                         highScoreObject.WriteHighScore(score);       
                     }
-                    endOfGame = true;//So the Game Over Menu will show
+                    //endOfGame = true;//So the Game Over Menu will show
                     game.SetGameState(Game1.GameState.GameOverMenu);
                 }
                 
@@ -192,6 +192,7 @@ namespace Space_Invaders
             lives = 3;
             extraLifeAccumulator = 0;
             highScore = highScoreObject.ReadHighScore();
+            //endOfGame = false;
             gameOver = false;
 
         }

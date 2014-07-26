@@ -17,7 +17,7 @@ namespace Space_Invaders
     /// Represents a MothershipSprite which is a wrapper class of the Mothership class.
     /// 
     /// Authors - Patrick Nicoll
-    /// Version - 25/05/2013
+    /// Version - 26/07/2014 - v1.1
     /// </summary>
     public class MothershipSprite : Microsoft.Xna.Framework.DrawableGameComponent
     {

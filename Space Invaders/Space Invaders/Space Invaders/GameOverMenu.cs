@@ -13,7 +13,7 @@ namespace Space_Invaders
     /// Class defining the Game Over Menu of the game.
     /// 
     /// Author Patrick Nicoll
-    /// Version 12/12/2013 - v1.0
+    /// Version 26/07/2014 - v1.1
     /// </summary>
     class GameOverMenu : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -24,8 +24,8 @@ namespace Space_Invaders
         private SpriteBatch spriteBatch;
 
         private Color color;
-        private Color selectedColor; // Selected menu item's color
-        private int colorFlashTimer; // Used to time color flash effect on selected menu
+        private Color selectedColor;  //Selected menu item's color
+        private int colorFlashTimer;  //Used to time color flash effect on selected menu item 
         private int padding;
 
         KeyboardState keyboard;
@@ -52,9 +52,10 @@ namespace Space_Invaders
 
             //Add each menu item to the list
             menuItems.Add("Restart");
+            menuItems.Add("Main Menu");
             menuItems.Add("Exit");
 
-            //Initialize font color to white
+            //Initialize font color to white and flash timer to 0
             color = Color.White;
             colorFlashTimer = 0;
 
@@ -108,14 +109,27 @@ namespace Space_Invaders
                 {
                     switch (selected)
                     {
+                        //Game restart case
                         case 0:
                             {
+                                game.restartGame();
                                 //timer.Start();
                                 break;
                             }
+/*
+                        //Main menu case
                         case 1:
-                            game.SetGameState(Game1.GameState.Exit);
-                            break;
+                            {
+                                game.SetGameState(Game1.GameState.MainMenu);
+                                break;
+                            }
+                            */
+                        //Exit case
+                        case 2:
+                            {
+                                game.SetGameState(Game1.GameState.Exit);
+                                break;
+                            }
                     }
                 }
 
@@ -149,14 +163,14 @@ namespace Space_Invaders
                         (screenHeight / 3)), Color.White);
                 }
 
-                game.removeComponents();
+                //game.removeComponents();
 
 
                 for (int i = 0; i < menuItems.Count; i++)
                 {
                     if (i == selected)
                     {
-                        FlashTimerControl();
+                        FlashTimerControl();  //Calls method to produce the text flashing effect
                         color = selectedColor;
                     }
                     else

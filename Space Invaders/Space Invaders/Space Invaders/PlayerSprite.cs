@@ -17,7 +17,7 @@ namespace Space_Invaders
     /// Represents a PlayerSprite which is a wrapper class of the Player class.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 31/10/2012 - v1.0
+    /// Version - 26/07/2014 - v1.1
     /// </summary>
     public class PlayerSprite : Microsoft.Xna.Framework.DrawableGameComponent
     {

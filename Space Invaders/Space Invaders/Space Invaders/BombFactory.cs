@@ -16,7 +16,7 @@ namespace Space_Invaders
     /// that are launched by an AlienSquad object.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 25/10/2012 - v1.0
+    /// Version - 26/07/2014 - v1.1
     /// </summary>
     public class BombFactory : ProjectileFactory
     {
@@ -27,7 +27,7 @@ namespace Space_Invaders
         public event PlayerCollision playerCollision;
 
         // constructor
-        public BombFactory(Game game, int screenHeight, PlayerSprite player) : base(game, screenHeight)
+        public BombFactory(Game1 game, int screenHeight, PlayerSprite player) : base(game, screenHeight)
         {
             bullets = new List<ProjectileSprite>();
             this.game = game;

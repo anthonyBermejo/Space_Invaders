@@ -17,7 +17,7 @@ namespace Space_Invaders
     /// An instance of an alien squad, consisting of multiple AlienSprite instances.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 30/10/2013 - v1.03
+    /// Version - 26/07/2014 - v1.1
     /// </summary>
     /// 
 

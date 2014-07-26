@@ -12,7 +12,7 @@ namespace Space_Invaders
     /// Class defining the main menu component of the game.
     /// 
     /// Author Patrick Nicoll
-    /// Version 26/07/2014 - v1.2
+    /// Version 5/11/2013 - v1.1
     /// </summary>
     public class MainMenu : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -22,7 +22,7 @@ namespace Space_Invaders
         private int screenWidth;
         private SpriteBatch spriteBatch;
 
-        private Color color;
+        private Color color; 
         private Color selectedColor;  //Selected menu item's color
         private int colorFlashTimer;  //Used to time color flash effect on selected menu item 
         private int padding;

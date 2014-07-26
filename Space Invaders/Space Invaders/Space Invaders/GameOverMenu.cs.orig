@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Space_Invaders
 {
+
     /// <summary>
-    /// Class defining the main menu component of the game.
+    /// Class defining the Game Over Menu of the game.
     /// 
     /// Author Patrick Nicoll
-    /// Version 26/07/2014 - v1.2
+    /// Version 12/12/2013 - v1.0
     /// </summary>
-    public class MainMenu : Microsoft.Xna.Framework.DrawableGameComponent
+    class GameOverMenu : Microsoft.Xna.Framework.DrawableGameComponent
     {
         private Game1 game;
         private GraphicsDeviceManager graphics;
@@ -34,10 +35,15 @@ namespace Space_Invaders
         List<string> menuItems = new List<string>();
         int selected = 0; //Highlighted menu item
 
-        private System.Timers.Timer timer = new System.Timers.Timer(250); //Create a timer to delay game start
-        
+        private int score;
+        private int highScore;
 
-        public MainMenu(Game1 game) : base(game)
+        //NOTE: Keeping this incase of future need
+        //private System.Timers.Timer timer = new System.Timers.Timer(250); //Create a timer to delay game start
+
+
+        public GameOverMenu(Game1 game)
+            : base(game)
         {
             this.game = game;
             graphics = game.getGraphicsDeviceManager();
@@ -45,19 +51,19 @@ namespace Space_Invaders
             screenWidth = graphics.PreferredBackBufferWidth;
 
             //Add each menu item to the list
-            menuItems.Add("Play");
+            menuItems.Add("Restart");
+            menuItems.Add("Main Menu");
             menuItems.Add("Exit");
 
             //Initialize font color to white and flash timer to 0
             color = Color.White;
             colorFlashTimer = 0;
-            
+
             //Padding between menu items
             padding = 3;
 
-
             // Hook up event to timer
-            timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimedEvent);
+            //timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimedEvent);
         }
 
         public override void Initialize()
@@ -74,7 +80,7 @@ namespace Space_Invaders
 
         public override void Update(GameTime gameTime)
         {
-            if (game.GetGameState() == Game1.GameState.MainMenu)
+            if (game.GetGameState() == Game1.GameState.GameOverMenu)
             {
                 keyboard = Keyboard.GetState();
 
@@ -103,14 +109,27 @@ namespace Space_Invaders
                 {
                     switch (selected)
                     {
+                        //Game restart case
                         case 0:
                             {
-                                timer.Start(); 
+                                game.restartGame();
+                                //timer.Start();
                                 break;
                             }
+/*
+                        //Main menu case
                         case 1:
-                            game.SetGameState(Game1.GameState.Exit);
-                            break;
+                            {
+                                game.SetGameState(Game1.GameState.MainMenu);
+                                break;
+                            }
+                            */
+                        //Exit case
+                        case 2:
+                            {
+                                game.SetGameState(Game1.GameState.Exit);
+                                break;
+                            }
                     }
                 }
 
@@ -122,9 +141,31 @@ namespace Space_Invaders
 
         public override void Draw(GameTime gameTime)
         {
-            if (game.GetGameState() == Game1.GameState.MainMenu)
+            if (game.GetGameState() == Game1.GameState.GameOverMenu)
             {
+                score = game.GetGameScore();
+                highScore = game.GetGameHighScore();
                 spriteBatch.Begin();
+
+                spriteBatch.DrawString(font, "GAME OVER", new Vector2((screenWidth / 2) - (font.MeasureString("GAME OVER").X / 2),
+                    screenHeight / 4), Color.White);
+
+                if (score <= highScore)
+                {
+                    spriteBatch.DrawString(font, "HIGH SCORE: " + highScore, new Vector2((screenWidth / 2) - (font.MeasureString("HIGH SCORE: " + highScore).X / 2),
+                        screenHeight / 3), Color.White);
+                    spriteBatch.DrawString(font, "YOUR SCORE: " + score, new Vector2((screenWidth / 2) - (font.MeasureString("YOUR SCORE: " + score).X / 2),
+                        screenHeight / 3 - font.LineSpacing + padding), Color.White);
+                }
+                else
+                {
+                    spriteBatch.DrawString(font, "NEW HIGH SCORE: " + score, new Vector2((screenWidth / 2) - (font.MeasureString("NEW HIGH SCORE: " + score).X / 2),
+                        (screenHeight / 3)), Color.White);
+                }
+
+                //game.removeComponents();
+
+
                 for (int i = 0; i < menuItems.Count; i++)
                 {
                     if (i == selected)
@@ -150,7 +191,22 @@ namespace Space_Invaders
         private void OnTimedEvent(object source, System.Timers.ElapsedEventArgs e)
         {
             game.SetGameState(Game1.GameState.Playing);
-            timer.Dispose();
+            //timer.Dispose();
+        }
+
+        private void FlashTimerControl()
+        {
+            colorFlashTimer++;
+
+            if (colorFlashTimer % 20 == 0)
+            {
+                if (selectedColor == Color.Yellow)
+                    selectedColor = Color.White;
+                else
+                    selectedColor = Color.Yellow;
+
+                colorFlashTimer = 0;
+            }
         }
 
         private void FlashTimerControl()

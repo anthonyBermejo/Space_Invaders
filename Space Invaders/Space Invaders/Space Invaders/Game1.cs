@@ -26,6 +26,7 @@ namespace Space_Invaders
         public GamerServicesComponent GamerServices;
         private MainMenu mainMenu;
         private GameOverMenu gameOverMenu;
+        private Starfield starfield;
         private SpriteBatch spriteBatch;
         private PlayerSprite playerSprite;
         private AlienSquad alienSquad;
@@ -76,6 +77,9 @@ namespace Space_Invaders
             //Creates the game over menu
             gameOverMenu = new GameOverMenu(this);
 
+            //Generates the starfield
+            starfield = new Starfield(this, screenHeight);
+
             setDifficulty(2); // Set to 1 until game menu is designed
 
             laser = new LaserFactory(this, graphics.PreferredBackBufferHeight);
@@ -88,8 +92,10 @@ namespace Space_Invaders
             laser.SetMothership(mothershipSprite);
 
             Components.Add(new GamerServicesComponent(this));
+            Components.Add(starfield);
             Components.Add(mainMenu);
             Components.Add(gameOverMenu);
+            
 
             Components.Add(laser);
             Components.Add(bomb);
@@ -252,18 +258,20 @@ namespace Space_Invaders
         {
             paused = true;
             pausedForGuide = !UserInitiated;
-            removeComponents();
+            SetGameState(GameState.Paused);
+            //removeComponents();
         }
 
         private void EndPause()
         {
             pausedForGuide = false;
             paused = false;
-            Components.Add(laser);
-            Components.Add(bomb);
-            Components.Add(playerSprite);
-            Components.Add(alienSquad);
-            Components.Add(mothershipSprite);
+            SetGameState(GameState.Playing);
+            //Components.Add(laser);
+            //Components.Add(bomb);
+            //Components.Add(playerSprite);
+            //Components.Add(alienSquad);
+            //Components.Add(mothershipSprite);
         }
 
         private void checkPauseKey(KeyboardState keyboardState)
@@ -311,6 +319,16 @@ namespace Space_Invaders
             Components.Remove(playerSprite);
             Components.Remove(alienSquad);
             Components.Remove(mothershipSprite);
+        }
+
+        public void restartGame()
+        {
+            SetGameState(GameState.Playing);
+            score.resetGame();
+            playerSprite.resetGame();
+            mothershipSprite.resetGame();
+            alienSquad.resetGame();
+            
         }
     }
 }

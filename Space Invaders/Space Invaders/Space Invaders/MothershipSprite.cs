@@ -25,11 +25,11 @@ namespace Space_Invaders
         private Mothership mothership;
         private SpriteBatch spriteBatch;
         private Texture2D imageMother;
-        private Game game;
+        private Game1 game;
         private bool spawnMother;
 
         //Constructor
-        public MothershipSprite(Game game, LaserFactory laser)
+        public MothershipSprite(Game1 game, LaserFactory laser)
             : base(game)
         {
             this.game = game;
@@ -65,13 +65,16 @@ namespace Space_Invaders
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            if (spawnMother)
+            if(game.GetGameState() == Game1.GameState.Playing)
             {
-                if (mothership.GetAlienState() != AlienState.INACTIVE)
-                    Move();
-                base.Update(gameTime);
+                if (spawnMother)
+                {
+                    if (mothership.GetAlienState() != AlienState.INACTIVE)
+                        Move();
+                }
             }
-        }
+                base.Update(gameTime);
+         }
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -79,10 +82,13 @@ namespace Space_Invaders
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
-            if(mothership.GetAlienState() == AlienState.ACTIVE)
-                spriteBatch.Draw(imageMother, mothership.GetPosition(), Color.White);
-            spriteBatch.End();
+            if (game.GetGameState() == Game1.GameState.Playing)
+            {
+                spriteBatch.Begin();
+                if (mothership.GetAlienState() == AlienState.ACTIVE)
+                    spriteBatch.Draw(imageMother, mothership.GetPosition(), Color.White);
+                spriteBatch.End();
+            }
             base.Draw(gameTime);
         }
 
@@ -139,6 +145,12 @@ namespace Space_Invaders
             mothership.RandomizeMothershipSpawn();
         }
 
+        public void resetGame()
+        {
+            spawnMother = false;
+            SetAlienState(AlienState.ACTIVE);
+        }
+
         /// <summary>
         /// Calls the Mothership class' SetAlienState method.
         /// </summary>
@@ -176,5 +188,6 @@ namespace Space_Invaders
         {
             ((MothershipSprite)killedMothership).SetAlienState(AlienState.INACTIVE);
         }
+
     }
 }

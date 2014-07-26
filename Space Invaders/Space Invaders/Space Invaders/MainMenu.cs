@@ -23,8 +23,8 @@ namespace Space_Invaders
         private SpriteBatch spriteBatch;
 
         private Color color;
-        private Color selectedColor;
-        private int colorFlashTimer; 
+        private Color selectedColor;  //Selected menu item's color
+        private int colorFlashTimer;  //Used to time color flash effect on selected menu item 
         private int padding;
 
         KeyboardState keyboard;
@@ -48,12 +48,13 @@ namespace Space_Invaders
             menuItems.Add("Play");
             menuItems.Add("Exit");
 
-            //Initialize font color to white
+            //Initialize font color to white and flash timer to 0
             color = Color.White;
             colorFlashTimer = 0;
             
             //Padding between menu items
             padding = 3;
+
 
             // Hook up event to timer
             timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimedEvent);
@@ -128,7 +129,7 @@ namespace Space_Invaders
                 {
                     if (i == selected)
                     {
-                        FlashTimerControl();
+                        FlashTimerControl();  //Calls method to produce the text flashing effect
                         color = selectedColor;
                     }
                     else
@@ -150,6 +151,21 @@ namespace Space_Invaders
         {
             game.SetGameState(Game1.GameState.Playing);
             timer.Dispose();
+        }
+
+        private void FlashTimerControl()
+        {
+            colorFlashTimer++;
+
+            if (colorFlashTimer % 20 == 0)
+            {
+                if (selectedColor == Color.Yellow)
+                    selectedColor = Color.White;
+                else
+                    selectedColor = Color.Yellow;
+
+                colorFlashTimer = 0;
+            }
         }
 
         private void FlashTimerControl()

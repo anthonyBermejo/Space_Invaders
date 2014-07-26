@@ -157,5 +157,10 @@ namespace Space_Invaders
         {
             player.ResetPosition();
         }
+
+        public void resetGame()
+        {
+            ResetPosition();
+        }
     }
 }

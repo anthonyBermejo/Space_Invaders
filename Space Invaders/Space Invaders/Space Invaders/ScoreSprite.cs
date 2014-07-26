@@ -50,7 +50,7 @@ namespace Space_Invaders
             alienSquad.GameOver += setGameOver;
             screenHeight = graphics.PreferredBackBufferHeight;
             screenWidth = graphics.PreferredBackBufferWidth;
-            lives = 3;
+            lives = 1; //SET TO 1 FOR TESTING, SET TO 3 NORMALLY
             extraLifeAccumulator = 0;
             this.alienSquad = alienSquad;
             highScoreObject = new HighScore();
@@ -186,6 +186,16 @@ namespace Space_Invaders
             return score;
         }
 
+        public void resetGame()
+        {
+            score = 0;
+            lives = 3;
+            extraLifeAccumulator = 0;
+            highScore = highScoreObject.ReadHighScore();
+            gameOver = false;
+
+        }
+
         /// <summary>
         /// Keeps track of the player's score. Also gives the player extra lives once they reach a certain amount of points.
         /// </summary>
@@ -202,5 +212,7 @@ namespace Space_Invaders
                 lives++;
             }
         }
+
+       
     }
 }

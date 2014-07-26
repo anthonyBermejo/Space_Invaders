@@ -327,6 +327,13 @@ namespace Space_Invaders
             return level;
         }
 
+        public void resetGame()
+        {
+            resetAlienSquad();
+            level = 1;
+            alienLevel = 1;
+        }
+
         /// <summary>
         /// Called when a collision is detected between an AlienSprite and a Projectile from the
         /// LaserFactory.

@@ -25,10 +25,13 @@ namespace Space_Invaders
         protected List<ProjectileSprite> bullets;
         protected int screenHeight;
 
+        private Game1 game;
+
         //constructor
-        public ProjectileFactory(Game game, int screenHeight)
+        public ProjectileFactory(Game1 game, int screenHeight)
             : base(game)
         {
+            this.game = game;
             this.screenHeight = screenHeight;
         }
 
@@ -38,6 +41,7 @@ namespace Space_Invaders
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Draw(GameTime gameTime)
         {
+            if(game.GetGameState() == Game1.GameState.Playing)
             foreach (var item in bullets)
             {
                 item.Draw(gameTime);

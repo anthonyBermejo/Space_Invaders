@@ -38,7 +38,7 @@ namespace Space_Invaders
         public event MothershipCollision MothershipCollision;
 
         // constructor
-        public LaserFactory(Game game, int screenHeight) : base(game, screenHeight) 
+        public LaserFactory(Game1 game, int screenHeight) : base(game, screenHeight) 
         {
             bullets = new List<ProjectileSprite>();
             this.game = game;

@@ -29,6 +29,7 @@ namespace Space_Invaders
         private Game1 game;
         private AlienSprite[,] alienSquad;
         private MothershipSprite mothershipSprite;
+        private PlayerSprite playerSprite;
         private Direction dir;
         private Direction previousDir;
         private static Random random = new Random();
@@ -43,7 +44,6 @@ namespace Space_Invaders
         private int screenHeight;
         private int killedCount; //represents the killed aliens.
         private int level; //represents how many levels have been cleared. After every stage clear, the count is incremented. 
-        private int difficulty; // Represents the difficulty stage
         public event GameOver GameOver;
         private LaserFactory aLaser;
         private int motionCtr; //Used to delay time between switching images for aliens
@@ -62,7 +62,7 @@ namespace Space_Invaders
         private Texture2D hitAlienTexture3;
 
         // Constructor
-        public AlienSquad(Game1 game, int screenWidth, int screenHeight, BombFactory bomb, LaserFactory laser, MothershipSprite mothershipSprite)
+        public AlienSquad(Game1 game, int screenWidth, int screenHeight, BombFactory bomb, LaserFactory laser, MothershipSprite mothershipSprite, PlayerSprite playerSprite)
             : base(game)
         {
             this.game = game;
@@ -70,7 +70,7 @@ namespace Space_Invaders
             this.screenHeight = screenHeight;
             this.bomb = bomb;
             this.mothershipSprite = mothershipSprite;
-            difficulty = game.getDifficulty();
+            this.playerSprite = playerSprite;
             dir = Direction.LEFT;
             alienWidth = game.Content.Load<Texture2D>("spaceship1").Width;
             alienHeight = game.Content.Load<Texture2D>("spaceship1").Height;
@@ -204,7 +204,7 @@ namespace Space_Invaders
 
             if (game.GetGameState() == Game1.GameState.Playing)
             {
-                fireTime = 120 / difficulty;
+                fireTime = 120;
 
                 for (int ctr1 = 0; ctr1 < alienSquad.GetLength(0); ctr1++)
                     for (int ctr2 = 0; ctr2 < alienSquad.GetLength(1); ctr2++)
@@ -239,7 +239,7 @@ namespace Space_Invaders
                     {
                         alienSquad[ctr1, ctr2].Move(dir);
                         if (alienSquad[ctr1, ctr2].GetAlienState() == AlienState.ACTIVE)
-                            if (alienSquad[ctr1, ctr2].GetBoundary().Bottom >= screenHeight)
+                            if (alienSquad[ctr1, ctr2].GetBoundary().Bottom >= screenHeight - playerSprite.GetBoundary().Height)
                                 onGameOver();
                     }
 
@@ -377,8 +377,6 @@ namespace Space_Invaders
                 {
                     alien.SetTexture(hitAlienTexture3);
                 }
-
-                Console.Write(alien.GetHitPoints());
             }
         }
 
@@ -391,15 +389,15 @@ namespace Space_Invaders
         private void resetAlienSquad()
         {
             Alien.speed = 0.5f;
-
-
-            for (int i = 0; i < alienSquad.GetLength(0); i++)
-                for(int j = 0; j < alienSquad.GetLength(1); j++)
-                    alienSquad[i, j].SetHitPoints(difficulty);
-
             level++;
             alienLevel++;
             killedCount = 0;
+
+            // reset hitpoints
+            for (int i = 0; i < alienSquad.GetLength(0); i++)
+                for (int j = 0; j < alienSquad.GetLength(1); j++)
+                    alienSquad[i, j].SetHitPoints(2);
+
             setAlienSquadToActive();
             drawAlienSquad();
             resetMothership();

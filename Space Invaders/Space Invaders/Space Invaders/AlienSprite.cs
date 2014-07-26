@@ -24,7 +24,6 @@ namespace Space_Invaders
     {
         // instance variable declaration
         private Alien alien;
-        private int difficulty; // Difficulty level
         private int hitPoints; // Alien hitpoints based on difficulty level
         private AlienType alienType; // Type of Alien based on row number in AlienSquad array
         private SpriteBatch spriteBatch;
@@ -37,7 +36,6 @@ namespace Space_Invaders
         {
             this.game = game;
             this.imageAlien = imageAlien;
-            difficulty = game.getDifficulty();
         }
 
         /// <summary>
@@ -57,7 +55,7 @@ namespace Space_Invaders
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            hitPoints = difficulty; //Assigned for clarity
+            hitPoints = 2;
             alien = new Alien(imageAlien.Width, imageAlien.Height, GraphicsDevice.Viewport.Height, GraphicsDevice.Viewport.Width, hitPoints);
             base.LoadContent();
         }

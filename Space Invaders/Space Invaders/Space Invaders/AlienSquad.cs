@@ -84,7 +84,7 @@ namespace Space_Invaders
             laser.AlienCollision += killAlien;
             killedCount = 0;
             level = 1;
-            alienLevel = 0;
+            alienLevel = 1;
             aLaser = laser;
             
         }
@@ -270,13 +270,15 @@ namespace Space_Invaders
 
         private void drawAlienSquad()
         {
+            Console.WriteLine("drawAlienSquad - begin" + alienLevel);
+
             // Calling the SetPosition method to set the position of each alien
             alienWidthSpacing = alienWidth * 3;
-            alienSquad[0, 0].SetPosition(alienWidth, alienHeight * alienLevel);
+            alienSquad[0, 0].SetPosition(alienWidth, alienHeight * level);
 
             for (int ctr = 1; ctr < alienSquad.GetLength(1); ctr++)
             {
-                alienSquad[0, ctr].SetPosition(alienWidthSpacing, alienHeight * alienLevel);
+                alienSquad[0, ctr].SetPosition(alienWidthSpacing, alienHeight * level);
                 alienWidthSpacing += alienWidth * 2;
             }
 
@@ -299,6 +301,8 @@ namespace Space_Invaders
                 alienSquad[2, ctr].SetPosition(alienWidthSpacing, alienSquad[1, 0].GetBoundary().Bottom + 5);
                 alienWidthSpacing += alienWidth * 2;
             }
+
+            Console.WriteLine("drawAlienSquad - end" + alienLevel);
         }
 
         /// <summary>
@@ -330,9 +334,9 @@ namespace Space_Invaders
 
         public void resetGame()
         {
-            resetAlienSquad();
             level = 1;
-            alienLevel = 0;
+            alienLevel = 1;
+            resetAlienSquad();
         }
 
         /// <summary>
@@ -357,7 +361,12 @@ namespace Space_Invaders
                     Alien.IncreaseSpeed();
                 //Resets squad if all are killed
                 if (killedCount == alienSquad.Length)
+                {
+                    Console.WriteLine("kill alien - before increment " + alienLevel);
+                    level++;
+                    alienLevel++;
                     resetAlienSquad();
+                }
                 //Spawns mothership once a certain number are killed
                 if (killedCount == (alienSquad.Length / 2))
                     mothershipSprite.SetSpawnMother(true);
@@ -389,9 +398,8 @@ namespace Space_Invaders
 
         private void resetAlienSquad()
         {
+            Console.WriteLine("resetAlienSquad - begin" + alienLevel);
             Alien.speed = 0.5f;
-            level++;
-            alienLevel++;
             killedCount = 0;
 
             // reset hitpoints
@@ -400,8 +408,10 @@ namespace Space_Invaders
                     alienSquad[i, j].SetHitPoints(2);
 
             setAlienSquadToActive();
-            drawAlienSquad();
+            drawAlienSquad();  
             resetMothership();
+
+            Console.WriteLine("resetAlienSquad - end" + alienLevel);
         }
 
         /// <summary>

@@ -74,7 +74,7 @@ namespace Space_Invaders
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            font = game.Content.Load<SpriteFont>("scoreFont");
+            font = game.Content.Load<SpriteFont>("menuFont");
             base.LoadContent();
         }
 

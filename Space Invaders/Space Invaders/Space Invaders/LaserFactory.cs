@@ -33,8 +33,8 @@ namespace Space_Invaders
         private SoundEffect alienKillSound;
         private ProjectileSprite projectile;
         private TimeSpan previousLaunchTime = new TimeSpan();
-        private TimeSpan tolerance = TimeSpan.FromMilliseconds(360);
-        //private TimeSpan tolerance = TimeSpan.FromMilliseconds(0); //USED DURING TESTING FOR UNLIMITED FIRING
+        //private TimeSpan tolerance = TimeSpan.FromMilliseconds(360);
+        private TimeSpan tolerance = TimeSpan.FromMilliseconds(0); //USED DURING TESTING FOR UNLIMITED FIRING
         private AlienSquad alienSquad;
         private MothershipSprite mothership;
         public event AlienCollision AlienCollision;

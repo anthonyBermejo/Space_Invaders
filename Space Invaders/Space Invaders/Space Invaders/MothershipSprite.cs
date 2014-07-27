@@ -60,7 +60,6 @@ namespace Space_Invaders
             imageMother = game.Content.Load<Texture2D>("mothership");
             mothershipSound = game.Content.Load<SoundEffect>("mothershipSound");
             mothershipSoundInstance = mothershipSound.CreateInstance();
-            mothershipSoundInstance.IsLooped = true;
             mothershipKillSound = game.Content.Load<SoundEffect>("mothershipKillSound");
             mothership = new Mothership(imageMother.Width, imageMother.Height, GraphicsDevice.Viewport.Height, GraphicsDevice.Viewport.Width, 2F);
             base.LoadContent();
@@ -83,10 +82,11 @@ namespace Space_Invaders
                             mothershipSoundInstance.Play();
                     } 
                     else if (mothership.GetAlienState() == AlienState.INACTIVE)
-                    mothershipSoundInstance.Stop();
+                        mothershipSoundInstance.Stop();
                 }
                
             }
+
                 base.Update(gameTime);
          }
 
@@ -122,6 +122,11 @@ namespace Space_Invaders
         public Rectangle GetBoundary()
         {
             return mothership.GetBoundary();
+        } 
+        
+        public SoundState getMothershipSoundState()
+        {
+            return mothershipSoundInstance.State;
         }
 
         /// <summary>
@@ -142,6 +147,8 @@ namespace Space_Invaders
             return spawnMother;
         }
 
+       
+
         /// <summary>
         /// Calls the Mothership class' Move method
         /// </summary>
@@ -150,6 +157,8 @@ namespace Space_Invaders
         {
             mothership.Move();
         }
+
+        
 
         /// <summary>
         /// Calls the Mothership class' RandomizeMothershipSpawn
@@ -172,6 +181,16 @@ namespace Space_Invaders
         public void SetAlienState(AlienState state)
         {
             mothership.SetAlienState(state);
+        }
+        
+        public void setMothershipSoundState(SoundState state)
+        {
+            if (state == SoundState.Playing)
+                mothershipSoundInstance.Pause();
+            else if (state == SoundState.Paused)
+                mothershipSoundInstance.Resume();
+            else
+                mothershipSoundInstance.Stop();
         }
 
         /// <summary>

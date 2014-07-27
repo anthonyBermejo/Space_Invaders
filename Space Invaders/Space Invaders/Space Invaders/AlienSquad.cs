@@ -17,7 +17,7 @@ namespace Space_Invaders
     /// An instance of an alien squad, consisting of multiple AlienSprite instances.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 26/07/2014 - v1.1
+    /// Version - 26/07/2014 - v1.2
     /// </summary>
     /// 
 
@@ -30,9 +30,11 @@ namespace Space_Invaders
         private AlienSprite[,] alienSquad;
         private MothershipSprite mothershipSprite;
         private PlayerSprite playerSprite;
+
         private Direction dir;
         private Direction previousDir;
         private static Random random = new Random();
+
         private BombFactory bomb;
         private int fireCap = 0; // variable used for the squad's shooting.
         private float fireTime = 120; // time between squad's shots
@@ -44,10 +46,12 @@ namespace Space_Invaders
         private int screenHeight;
         private int killedCount; //represents the killed aliens.
         private int level; //represents how many levels have been cleared. After every stage clear, the count is incremented. 
+
         public event GameOver GameOver;
         private LaserFactory aLaser;
         private int motionCtr; //Used to delay time between switching images for aliens
         private int currentListPos; //Keeps track of position in alien picture lists
+
         private List<Texture2D> alienMotion1;
         private List<Texture2D> alienMotion2;
         private List<Texture2D> alienMotion3;
@@ -60,6 +64,8 @@ namespace Space_Invaders
         private Texture2D hitAlienTexture1;
         private Texture2D hitAlienTexture2;
         private Texture2D hitAlienTexture3;
+        private SoundEffect alienKillSound;
+        private SoundEffectInstance alienKillSoundInstance;
 
         // Constructor
         public AlienSquad(Game1 game, int screenWidth, int screenHeight, BombFactory bomb, LaserFactory laser, MothershipSprite mothershipSprite, PlayerSprite playerSprite)
@@ -72,8 +78,7 @@ namespace Space_Invaders
             this.mothershipSprite = mothershipSprite;
             this.playerSprite = playerSprite;
             dir = Direction.LEFT;
-            alienWidth = game.Content.Load<Texture2D>("spaceship1").Width;
-            alienHeight = game.Content.Load<Texture2D>("spaceship1").Height;
+           
             alienSquad = new AlienSprite[3, 8];
 
             currentListPos = 0;
@@ -175,7 +180,12 @@ namespace Space_Invaders
         /// all of your content.
         /// </summary>
         protected override void LoadContent()
-        {         
+        { 
+            alienWidth = game.Content.Load<Texture2D>("spaceship1").Width;
+            alienHeight = game.Content.Load<Texture2D>("spaceship1").Height;
+            alienKillSound = game.Content.Load<SoundEffect>("alienKillSound");
+            alienKillSoundInstance = alienKillSound.CreateInstance();
+
             // Determines the graphical image that the Alien will take
             for (int ctr = 0; ctr < alienSquad.GetLength(1); ctr++)
             {
@@ -339,6 +349,21 @@ namespace Space_Invaders
             resetAlienSquad();
         }
 
+        public SoundState getAlienSoundState()
+        {
+            return alienKillSoundInstance.State;
+        }
+
+        public void setAlienSoundState(SoundState state)
+        {
+            if (state == SoundState.Paused)
+                alienKillSoundInstance.Resume();
+            else if (state == SoundState.Playing)
+                alienKillSoundInstance.Pause();
+            else
+                alienKillSoundInstance.Stop();
+        }
+
         /// <summary>
         /// Called when a collision is detected between an AlienSprite and a Projectile from the
         /// LaserFactory.
@@ -355,6 +380,7 @@ namespace Space_Invaders
             if (alien.GetHitPoints() <= 0)
             {
                 alien.SetAlienState(AlienState.INACTIVE);
+                alienKillSoundInstance.Play();
                 killedCount++;
                 //Increases speed of squad once a certain number are killed
                 if ((killedCount % 8) == 0)

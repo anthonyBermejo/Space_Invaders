@@ -31,6 +31,8 @@ namespace Space_Invaders
         private PlayerSprite playerSprite;
         private AlienSquad alienSquad;
         private MothershipSprite mothershipSprite;
+        private SoundEffect pauseSound;
+        private SoundEffectInstance pauseSoundInstance;
         private LaserFactory laser;
         private BombFactory bomb;
         private ScoreSprite score;
@@ -113,6 +115,8 @@ namespace Space_Invaders
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = this.Content.Load<SpriteFont>("scoreFont");
+            pauseSound = this.Content.Load<SoundEffect>("pauseSound");
+            pauseSoundInstance = pauseSound.CreateInstance();
         }
 
         /// <summary>
@@ -150,8 +154,17 @@ namespace Space_Invaders
                         break;
                     }
 
+                case GameState.Paused:
+                    {
+                        //alienSquad.setAlienSoundState(SoundState.Stopped);
+                        break;
+                    }
+
                 case GameState.GameOverMenu: 
-                    { 
+                    {
+                        mothershipSprite.setMothershipSoundState(SoundState.Stopped);
+                        alienSquad.setAlienSoundState(SoundState.Stopped);
+                        score.setExtraLifeSoundState(SoundState.Stopped);
                         break; 
                     }
 
@@ -238,6 +251,16 @@ namespace Space_Invaders
             paused = true;
             pausedForGuide = !UserInitiated;
             SetGameState(GameState.Paused);
+            pauseSoundInstance.Play();
+            
+            //Pauses sound effects
+            if(mothershipSprite.getMothershipSoundState() == SoundState.Playing)
+                mothershipSprite.setMothershipSoundState(SoundState.Playing);
+            if (alienSquad.getAlienSoundState() == SoundState.Playing)
+                alienSquad.setAlienSoundState(SoundState.Playing);
+            if (score.getExtraLifeSoundState() == SoundState.Playing)
+                score.setExtraLifeSoundState(SoundState.Playing);
+
             //removeComponents();
         }
 
@@ -245,6 +268,16 @@ namespace Space_Invaders
         {
             pausedForGuide = false;
             paused = false;
+            pauseSoundInstance.Stop();
+
+            //Resumes sound effects
+            if (mothershipSprite.getMothershipSoundState() == SoundState.Paused)
+                mothershipSprite.setMothershipSoundState(SoundState.Paused);
+            if (alienSquad.getAlienSoundState() == SoundState.Paused)
+                alienSquad.setAlienSoundState(SoundState.Paused);
+            if (score.getExtraLifeSoundState() == SoundState.Paused)
+                score.setExtraLifeSoundState(SoundState.Paused);
+
             SetGameState(GameState.Playing);
             //Components.Add(laser);
             //Components.Add(bomb);
@@ -306,6 +339,7 @@ namespace Space_Invaders
             playerSprite.resetGame();
             mothershipSprite.resetGame();
             alienSquad.resetGame();
+            laser.resetGame();
             SetGameState(GameState.Playing);
             
         }

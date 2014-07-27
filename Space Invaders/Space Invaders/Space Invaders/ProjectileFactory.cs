@@ -64,21 +64,24 @@ namespace Space_Invaders
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            for (int ctr = 0; ctr < bullets.Count; ctr++)
+            if (game.GetGameState() == Game1.GameState.Playing)
             {
-                bullets[ctr].Update(gameTime);
-
-                ProjectileSprite bullet = bullets[ctr];
-
-                // if bullets encounter a collision with a sprite
-                if (checkCollision(bullets[ctr]))
+                for (int ctr = 0; ctr < bullets.Count; ctr++)
                 {
-                }
-                // if bullets go past screen
-                else if (bullets[ctr].GetPosition().Y > screenHeight || bullets[ctr].GetPosition().Y < 0)
-                {
-                    bullets[ctr].Dispose();
-                    bullets.Remove(bullets[ctr]);
+                    bullets[ctr].Update(gameTime);
+
+                    ProjectileSprite bullet = bullets[ctr];
+
+                    // if bullets encounter a collision with a sprite
+                    if (checkCollision(bullets[ctr]))
+                    {
+                    }
+                    // if bullets go past screen
+                    else if (bullets[ctr].GetPosition().Y > screenHeight || bullets[ctr].GetPosition().Y < 0)
+                    {
+                        bullets[ctr].Dispose();
+                        bullets.Remove(bullets[ctr]);
+                    }
                 }
             }
             base.Update(gameTime);

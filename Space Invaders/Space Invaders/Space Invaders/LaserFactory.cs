@@ -22,7 +22,7 @@ namespace Space_Invaders
     /// that are launched by a Player object.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 26/07/2014 - v1.2
+    /// Version - 26/07/2014 - v1.3
     /// </summary>
     public class LaserFactory : ProjectileFactory
     {
@@ -30,7 +30,6 @@ namespace Space_Invaders
         private Game game;
         private Texture2D imageLaser;
         private SoundEffect laserSound;
-        private SoundEffect alienKillSound;
         private ProjectileSprite projectile;
         private TimeSpan previousLaunchTime = new TimeSpan();
         //private TimeSpan tolerance = TimeSpan.FromMilliseconds(360);
@@ -55,7 +54,6 @@ namespace Space_Invaders
         {
             imageLaser = game.Content.Load<Texture2D>("laser1");
             laserSound = game.Content.Load<SoundEffect>("laserSound");
-            alienKillSound = game.Content.Load<SoundEffect>("alienKillSound");
             base.LoadContent();
         }
 
@@ -93,7 +91,6 @@ namespace Space_Invaders
                             if (alienSquad[row, col].GetHitPoints() == 1)
                             {
                                 pts = 10 + (alienSquad.getAlienRowCount() - 1 - row) * 10;
-                                alienKillSound.Play();
                             }
 
                             onAlienCollision(alienSquad[row, col], pts);
@@ -164,6 +161,11 @@ namespace Space_Invaders
         {
             if (MothershipCollision != null)
                 MothershipCollision(killedMothership, points);
+        }
+
+        public void resetGame()
+        {
+            bullets.RemoveRange(0, bullets.Count);
         }
 
         /// <summary>

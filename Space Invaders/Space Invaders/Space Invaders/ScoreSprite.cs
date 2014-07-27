@@ -30,6 +30,7 @@ namespace Space_Invaders
         private SpriteBatch spriteBatch;
         private Texture2D imagePlayer;
         private SoundEffect extraLifeSound;
+        private SoundEffectInstance extraLifeSoundInstance;
         private Game1 game;
         private AlienSquad alienSquad;
         private BombFactory bomb;
@@ -59,7 +60,7 @@ namespace Space_Invaders
             extraLifeAccumulator = 0;
             this.alienSquad = alienSquad;
             highScoreObject = new HighScore();
-            highScoreObject.ReadHighScore();
+            highScore = highScoreObject.ReadHighScore();
         }
 
         /// <summary>
@@ -80,6 +81,7 @@ namespace Space_Invaders
             font = game.Content.Load<SpriteFont>("scoreFont");
             imagePlayer = game.Content.Load<Texture2D>("playerLife");
             extraLifeSound = game.Content.Load<SoundEffect>("extraLifeSound");
+            extraLifeSoundInstance = extraLifeSound.CreateInstance();
             base.LoadContent();
         }
 
@@ -192,6 +194,21 @@ namespace Space_Invaders
             return score;
         }
 
+        public SoundState getExtraLifeSoundState()
+        {
+            return extraLifeSoundInstance.State;
+        }
+
+        public void setExtraLifeSoundState(SoundState state)
+        {
+            if (state == SoundState.Playing)
+                extraLifeSoundInstance.Pause();
+            else if (state == SoundState.Paused)
+                extraLifeSoundInstance.Resume();
+            else
+                extraLifeSoundInstance.Stop();
+        }
+
         public void resetGame()
         {
             score = 0;
@@ -217,7 +234,7 @@ namespace Space_Invaders
             {
                 extraLifeAccumulator -= 5000;
                 lives++;
-                extraLifeSound.Play();
+                extraLifeSoundInstance.Play();
             }
         }
 

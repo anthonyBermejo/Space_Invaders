@@ -392,8 +392,9 @@ namespace Space_Invaders
                 {
                     Console.WriteLine("kill alien - before increment " + alienLevel);
                     level++;
-                    alienLevel = 1;
+                    alienLevel++;
                     resetAlienSquad();
+                    Console.WriteLine("kill alien - after reset " + alienLevel);
                 }
                 //Spawns mothership once a certain number are killed
                 if (killedCount == (alienSquad.Length / 2))
@@ -430,13 +431,10 @@ namespace Space_Invaders
             Alien.speed = 0.5f;
             killedCount = 0;
 
-            // reset hitpoints
-            for (int i = 0; i < alienSquad.GetLength(0); i++)
-                for (int j = 0; j < alienSquad.GetLength(1); j++)
-                    alienSquad[i, j].SetHitPoints(2);
-
-            setAlienSquadToActive();
-            drawAlienSquad();  
+            resetHitPoints();
+            resetAlienSquadTexture();
+            drawAlienSquad();
+            setAlienSquadToActive(); 
             resetMothership();
 
             Console.WriteLine("resetAlienSquad - end" + alienLevel);
@@ -513,6 +511,29 @@ namespace Space_Invaders
                 {
                     alienSquad[ctr1, ctr2].SetAlienState(AlienState.ACTIVE);
                 }
+        }
+
+        /// <summary>
+        /// Iterates through the alienSquad to reset each alien texture 
+        /// </summary>
+        private void resetAlienSquadTexture()
+        {
+            for (int ctr = 0; ctr < alienSquad.GetLength(1); ctr++)
+            {
+                    alienSquad[0, ctr].SetTexture(alienTexture1);
+                    alienSquad[1, ctr].SetTexture(alienTexture2);
+                    alienSquad[2, ctr].SetTexture(alienTexture3);
+            }
+        }
+
+        /// <summary>
+        /// Reset hitpoints of each alien 
+        /// </summary>
+        private void resetHitPoints()
+        {
+            for (int i = 0; i < alienSquad.GetLength(0); i++)
+                for (int j = 0; j < alienSquad.GetLength(1); j++)
+                    alienSquad[i, j].SetHitPoints(2);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Space_Invaders
     /// Class defining the Game Over Menu of the game.
     /// 
     /// Author Patrick Nicoll
-    /// Version 26/07/2014 - v1.1
+    /// Version 26/07/2014 - v1.2
     /// </summary>
     class GameOverMenu : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -39,7 +39,7 @@ namespace Space_Invaders
         private int highScore;
 
         //NOTE: Keeping this incase of future need
-        //private System.Timers.Timer timer = new System.Timers.Timer(250); //Create a timer to delay game start
+        private System.Timers.Timer timer = new System.Timers.Timer(500); //Create a timer to delay game start
 
 
         public GameOverMenu(Game1 game)
@@ -63,7 +63,7 @@ namespace Space_Invaders
             padding = 3;
 
             // Hook up event to timer
-            //timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimedEvent);
+            timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimedEvent);
         }
 
         public override void Initialize()
@@ -112,18 +112,18 @@ namespace Space_Invaders
                         //Game restart case
                         case 0:
                             {
+                                timer.Start();
                                 game.restartGame();
-                                //timer.Start();
                                 break;
                             }
-/*
                         //Main menu case
                         case 1:
                             {
-                                game.SetGameState(Game1.GameState.MainMenu);
+                                //game.restartGame();
+                                //game.SetGameState(Game1.GameState.MainMenu);
                                 break;
                             }
-                            */
+                          
                         //Exit case
                         case 2:
                             {
@@ -134,6 +134,9 @@ namespace Space_Invaders
                 }
 
                 prevKeyboard = keyboard;
+
+                score = game.GetGameScore();
+                highScore = game.GetGameHighScore();
             }
 
             base.Update(gameTime);
@@ -143,8 +146,6 @@ namespace Space_Invaders
         {
             if (game.GetGameState() == Game1.GameState.GameOverMenu)
             {
-                score = game.GetGameScore();
-                highScore = game.GetGameHighScore();
                 spriteBatch.Begin();
 
                 spriteBatch.DrawString(font, "GAME OVER", new Vector2((screenWidth / 2) - (font.MeasureString("GAME OVER").X / 2),
@@ -190,8 +191,8 @@ namespace Space_Invaders
 
         private void OnTimedEvent(object source, System.Timers.ElapsedEventArgs e)
         {
-            game.SetGameState(Game1.GameState.Playing);
-            //timer.Dispose();
+            //game.SetGameState(Game1.GameState.Playing);
+            timer.Enabled = false;
         }
 
         private void FlashTimerControl()

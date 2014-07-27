@@ -16,7 +16,7 @@ namespace Space_Invaders
     /// This is a game component that implements IUpdateable and IDrawable
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 26/07/2014 - v1.2
+    /// Version - 26/07/2014 - v1.3
     /// </summary>
     public class ScoreSprite : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -29,6 +29,7 @@ namespace Space_Invaders
         private SpriteFont font;
         private SpriteBatch spriteBatch;
         private Texture2D imagePlayer;
+        private SoundEffect extraLifeSound;
         private Game1 game;
         private AlienSquad alienSquad;
         private BombFactory bomb;
@@ -44,16 +45,21 @@ namespace Space_Invaders
             this.game = game;
             this.bomb = bomb;
             graphics = game.getGraphicsDeviceManager();
+
+            //Events
             bomb.playerCollision += removeLives;
             laser.AlienCollision += setScore;
             laser.MothershipCollision += setScore;
-            alienSquad.GameOver += setGameOver;
+            alienSquad.GameOver += setGameOver
+                ;
             screenHeight = graphics.PreferredBackBufferHeight;
             screenWidth = graphics.PreferredBackBufferWidth;
+
             lives = 1; //SET TO 1 FOR TESTING, SET TO 3 NORMALLY
             extraLifeAccumulator = 0;
             this.alienSquad = alienSquad;
             highScoreObject = new HighScore();
+            highScoreObject.ReadHighScore();
         }
 
         /// <summary>
@@ -73,6 +79,7 @@ namespace Space_Invaders
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = game.Content.Load<SpriteFont>("scoreFont");
             imagePlayer = game.Content.Load<Texture2D>("playerLife");
+            extraLifeSound = game.Content.Load<SoundEffect>("extraLifeSound");
             base.LoadContent();
         }
 
@@ -94,7 +101,6 @@ namespace Space_Invaders
         public override void Draw(GameTime gameTime)
         {
             int lifeSpacingX = screenWidth - 3 * (imagePlayer.Width + 5);
-            highScore = highScoreObject.ReadHighScore();
             if (game.GetGameState() == Game1.GameState.Playing)
             {
                  spriteBatch.Begin();
@@ -189,7 +195,7 @@ namespace Space_Invaders
         public void resetGame()
         {
             score = 0;
-            lives = 3;
+            lives = 1;  //SET TO 3 NORMALLY, 1 DURING TESTING
             extraLifeAccumulator = 0;
             highScore = highScoreObject.ReadHighScore();
             //endOfGame = false;
@@ -207,10 +213,11 @@ namespace Space_Invaders
             score += points;
             extraLifeAccumulator += points;
 
-            if ((extraLifeAccumulator / 5000) >= 1)
+            if ((extraLifeAccumulator / 200) >= 1)
             {
                 extraLifeAccumulator -= 5000;
                 lives++;
+                extraLifeSound.Play();
             }
         }
 

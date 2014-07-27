@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Space_Invaders
 {
@@ -16,13 +17,14 @@ namespace Space_Invaders
     /// that are launched by an AlienSquad object.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 26/07/2014 - v1.1
+    /// Version - 26/07/2014 - v1.2
     /// </summary>
     public class BombFactory : ProjectileFactory
     {
         // instance variable declarations
         private Game game;
         private Texture2D bombImage;
+        private SoundEffect playerDeathSound;
         private PlayerSprite player;
         public event PlayerCollision playerCollision;
 
@@ -42,6 +44,7 @@ namespace Space_Invaders
         protected override void LoadContent()
         {
             bombImage = game.Content.Load<Texture2D>("bomb");
+            playerDeathSound = game.Content.Load<SoundEffect>("playerDeathSound");
             base.LoadContent();
         }
 
@@ -69,6 +72,7 @@ namespace Space_Invaders
             {
                 onPlayerCollision(player, 0);
                 collision = true;
+                playerDeathSound.Play();
             }
 
             return collision;

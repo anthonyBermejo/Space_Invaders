@@ -84,6 +84,7 @@ namespace Space_Invaders
             laser.AlienCollision += killAlien;
             killedCount = 0;
             level = 1;
+            alienLevel = 0;
             aLaser = laser;
             
         }
@@ -331,7 +332,7 @@ namespace Space_Invaders
         {
             resetAlienSquad();
             level = 1;
-            alienLevel = 1;
+            alienLevel = 0;
         }
 
         /// <summary>

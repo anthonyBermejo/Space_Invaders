@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Space_Invaders
 {
@@ -12,7 +13,7 @@ namespace Space_Invaders
     /// Class defining the main menu component of the game.
     /// 
     /// Author Patrick Nicoll
-    /// Version 26/07/2014 - v1.2
+    /// Version 26/07/2014 - v1.3
     /// </summary>
     public class MainMenu : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -28,6 +29,10 @@ namespace Space_Invaders
         private int padding;
 
         private Texture2D titleScreenImg;
+        private SoundEffect titleScreenSong;
+        private SoundEffectInstance titleSongInstance; //Will allow theme song to loop
+
+        private bool songPlaying; //If the theme song is currently playing
 
         KeyboardState keyboard;
         KeyboardState prevKeyboard;
@@ -36,7 +41,7 @@ namespace Space_Invaders
         List<string> menuItems = new List<string>();
         int selected = 0; //Highlighted menu item
 
-        private System.Timers.Timer timer = new System.Timers.Timer(250); //Create a timer to delay game start
+        private System.Timers.Timer timer = new System.Timers.Timer(500); //Create a timer to delay game start
         
 
         public MainMenu(Game1 game) : base(game)
@@ -45,6 +50,8 @@ namespace Space_Invaders
             graphics = game.getGraphicsDeviceManager();
             screenHeight = graphics.PreferredBackBufferHeight;
             screenWidth = graphics.PreferredBackBufferWidth;
+
+            songPlaying = false;
 
             //Add each menu item to the list
             menuItems.Add("New Game");
@@ -72,6 +79,10 @@ namespace Space_Invaders
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = game.Content.Load<SpriteFont>("menuFont");
             titleScreenImg = game.Content.Load<Texture2D>("title-screen");
+            titleScreenSong = game.Content.Load<SoundEffect>("themeSong");
+            titleSongInstance = titleScreenSong.CreateInstance();
+            titleSongInstance.IsLooped = true;
+            titleSongInstance.Volume = 0.8f;
             base.LoadContent();
         }
 
@@ -79,6 +90,12 @@ namespace Space_Invaders
         {
             if (game.GetGameState() == Game1.GameState.MainMenu)
             {
+                if (!songPlaying)
+                {
+                    titleSongInstance.Play();
+                    songPlaying = true;
+                }
+
                 keyboard = Keyboard.GetState();
 
                 //Checks for input from user that represent going up
@@ -108,7 +125,8 @@ namespace Space_Invaders
                     {
                         case 0:
                             {
-                                timer.Start(); 
+                                titleSongInstance.Stop();
+                                timer.Start();
                                 break;
                             }
                         case 1:
@@ -154,7 +172,7 @@ namespace Space_Invaders
         private void OnTimedEvent(object source, System.Timers.ElapsedEventArgs e)
         {
             game.SetGameState(Game1.GameState.Playing);
-            timer.Dispose();
+            timer.Enabled = false;
         }
 
         private void FlashTimerControl()

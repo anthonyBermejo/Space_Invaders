@@ -10,7 +10,7 @@ namespace Space_Invaders
     /// Represents the mothership instance
     /// 
     /// Author - Patrick Nicoll
-    /// Version - 24/05/2013
+    /// Version - 26/07/2014 - v1.1
     /// </summary>
     class Mothership
     {
@@ -78,10 +78,16 @@ namespace Space_Invaders
             switch (dir)
             {
                 case Direction.LEFT:
-                    position.X -= SPEED;
-                    break;
+                    {
+                        position.X -= SPEED;
+                        if (GetPosition().X + motherWidth <= 0)
+                            SetAlienState(AlienState.INACTIVE);
+                        break;
+                    }
                 case Direction.RIGHT:
                     position.X += SPEED;
+                    if (GetPosition().X >= screenWidth)
+                        SetAlienState(AlienState.INACTIVE);
                     break;
             }
         }

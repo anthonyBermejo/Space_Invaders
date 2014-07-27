@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Space_Invaders
 {
@@ -21,17 +22,19 @@ namespace Space_Invaders
     /// that are launched by a Player object.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 26/07/2014 - v1.1
+    /// Version - 26/07/2014 - v1.2
     /// </summary>
     public class LaserFactory : ProjectileFactory
     {
         // instance variable declarations
         private Game game;
         private Texture2D imageLaser;
+        private SoundEffect laserSound;
+        private SoundEffect alienKillSound;
         private ProjectileSprite projectile;
         private TimeSpan previousLaunchTime = new TimeSpan();
         private TimeSpan tolerance = TimeSpan.FromMilliseconds(360);
-        //private TimeSpan tolerance = TimeSpan.FromMilliseconds(0);
+        //private TimeSpan tolerance = TimeSpan.FromMilliseconds(0); //USED DURING TESTING FOR UNLIMITED FIRING
         private AlienSquad alienSquad;
         private MothershipSprite mothership;
         public event AlienCollision AlienCollision;
@@ -51,6 +54,8 @@ namespace Space_Invaders
         protected override void LoadContent()
         {
             imageLaser = game.Content.Load<Texture2D>("laser1");
+            laserSound = game.Content.Load<SoundEffect>("laserSound");
+            alienKillSound = game.Content.Load<SoundEffect>("alienKillSound");
             base.LoadContent();
         }
 
@@ -86,7 +91,10 @@ namespace Space_Invaders
                         {
                             // Only gives points if Alien dies, on higher difficulties multiple hits will not award points
                             if (alienSquad[row, col].GetHitPoints() == 1)
+                            {
                                 pts = 10 + (alienSquad.getAlienRowCount() - 1 - row) * 10;
+                                alienKillSound.Play();
+                            }
 
                             onAlienCollision(alienSquad[row, col], pts);
                             collision = true;
@@ -132,6 +140,7 @@ namespace Space_Invaders
                 projectile.SetPosition(xCoordinate, yCoordinate);
                 bullets.Add(projectile);
                 previousLaunchTime = gameTime.TotalGameTime;
+                laserSound.Play();
             }
         }
 

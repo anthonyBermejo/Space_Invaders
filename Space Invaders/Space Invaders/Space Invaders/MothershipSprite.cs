@@ -17,7 +17,7 @@ namespace Space_Invaders
     /// Represents a MothershipSprite which is a wrapper class of the Mothership class.
     /// 
     /// Authors - Patrick Nicoll
-    /// Version - 26/07/2014 - v1.1
+    /// Version - 26/07/2014 - v1.2
     /// </summary>
     public class MothershipSprite : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -25,6 +25,9 @@ namespace Space_Invaders
         private Mothership mothership;
         private SpriteBatch spriteBatch;
         private Texture2D imageMother;
+        private SoundEffect mothershipSound;
+        private SoundEffectInstance mothershipSoundInstance; // Will allow more control over the mothership sound.
+        private SoundEffect mothershipKillSound;
         private Game1 game;
         private bool spawnMother;
 
@@ -55,6 +58,10 @@ namespace Space_Invaders
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             imageMother = game.Content.Load<Texture2D>("mothership");
+            mothershipSound = game.Content.Load<SoundEffect>("mothershipSound");
+            mothershipSoundInstance = mothershipSound.CreateInstance();
+            mothershipSoundInstance.IsLooped = true;
+            mothershipKillSound = game.Content.Load<SoundEffect>("mothershipKillSound");
             mothership = new Mothership(imageMother.Width, imageMother.Height, GraphicsDevice.Viewport.Height, GraphicsDevice.Viewport.Width, 2F);
             base.LoadContent();
         }
@@ -70,8 +77,15 @@ namespace Space_Invaders
                 if (spawnMother)
                 {
                     if (mothership.GetAlienState() != AlienState.INACTIVE)
+                    {
                         Move();
+                        if (mothershipSoundInstance.State != SoundState.Playing)
+                            mothershipSoundInstance.Play();
+                    } 
+                    else if (mothership.GetAlienState() == AlienState.INACTIVE)
+                    mothershipSoundInstance.Stop();
                 }
+               
             }
                 base.Update(gameTime);
          }
@@ -187,6 +201,7 @@ namespace Space_Invaders
         private void killMothership(DrawableGameComponent killedMothership, int points)
         {
             ((MothershipSprite)killedMothership).SetAlienState(AlienState.INACTIVE);
+             mothershipKillSound.Play();
         }
 
     }

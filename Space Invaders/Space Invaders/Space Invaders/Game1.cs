@@ -302,11 +302,11 @@ namespace Space_Invaders
 
         public void restartGame()
         {
-            SetGameState(GameState.Playing);
             score.resetGame();
             playerSprite.resetGame();
             mothershipSprite.resetGame();
             alienSquad.resetGame();
+            SetGameState(GameState.Playing);
             
         }
     }

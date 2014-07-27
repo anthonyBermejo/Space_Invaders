@@ -281,14 +281,15 @@ namespace Space_Invaders
         private void drawAlienSquad()
         {
             Console.WriteLine("drawAlienSquad - begin" + alienLevel);
+            Console.WriteLine("calculation" + alienHeight * alienLevel);
 
             // Calling the SetPosition method to set the position of each alien
             alienWidthSpacing = alienWidth * 3;
-            alienSquad[0, 0].SetPosition(alienWidth, alienHeight * level);
+            alienSquad[0, 0].SetPosition(alienWidth, alienHeight * alienLevel);
 
             for (int ctr = 1; ctr < alienSquad.GetLength(1); ctr++)
             {
-                alienSquad[0, ctr].SetPosition(alienWidthSpacing, alienHeight * level);
+                alienSquad[0, ctr].SetPosition(alienWidthSpacing, alienHeight * alienLevel);
                 alienWidthSpacing += alienWidth * 2;
             }
 
@@ -313,6 +314,7 @@ namespace Space_Invaders
             }
 
             Console.WriteLine("drawAlienSquad - end" + alienLevel);
+            Console.WriteLine("calculation" + alienHeight * alienLevel);
         }
 
         /// <summary>
@@ -390,7 +392,7 @@ namespace Space_Invaders
                 {
                     Console.WriteLine("kill alien - before increment " + alienLevel);
                     level++;
-                    alienLevel++;
+                    alienLevel = 1;
                     resetAlienSquad();
                 }
                 //Spawns mothership once a certain number are killed

@@ -51,8 +51,7 @@ namespace Space_Invaders
             bomb.playerCollision += removeLives;
             laser.AlienCollision += setScore;
             laser.MothershipCollision += setScore;
-            alienSquad.GameOver += setGameOver
-                ;
+            alienSquad.GameOver += setGameOver;
             screenHeight = graphics.PreferredBackBufferHeight;
             screenWidth = graphics.PreferredBackBufferWidth;
 

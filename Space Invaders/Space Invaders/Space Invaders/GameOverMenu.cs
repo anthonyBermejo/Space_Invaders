@@ -105,7 +105,7 @@ namespace Space_Invaders
                 }
 
                 //Checks for input from user that represents 'enter'
-                if (CheckKeyboard(Keys.Enter) || CheckKeyboard(Keys.Space))
+                if (CheckKeyboard(Keys.Enter))
                 {
                     switch (selected)
                     {

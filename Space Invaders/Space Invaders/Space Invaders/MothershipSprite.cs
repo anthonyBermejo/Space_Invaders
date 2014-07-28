@@ -17,7 +17,7 @@ namespace Space_Invaders
     /// Represents a MothershipSprite which is a wrapper class of the Mothership class.
     /// 
     /// Authors - Patrick Nicoll
-    /// Version - 26/07/2014 - v1.2
+    /// Version - 28/07/2014 - v1.3
     /// </summary>
     public class MothershipSprite : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -60,6 +60,7 @@ namespace Space_Invaders
             imageMother = game.Content.Load<Texture2D>("mothership");
             mothershipSound = game.Content.Load<SoundEffect>("mothershipSound");
             mothershipSoundInstance = mothershipSound.CreateInstance();
+            mothershipSoundInstance.Volume = 0.3f;
             mothershipKillSound = game.Content.Load<SoundEffect>("mothershipKillSound");
             mothership = new Mothership(imageMother.Width, imageMother.Height, GraphicsDevice.Viewport.Height, GraphicsDevice.Viewport.Width, 2F);
             base.LoadContent();

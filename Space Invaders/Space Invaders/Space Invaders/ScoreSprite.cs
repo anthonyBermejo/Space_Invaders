@@ -16,7 +16,7 @@ namespace Space_Invaders
     /// This is a game component that implements IUpdateable and IDrawable
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 26/07/2014 - v1.3
+    /// Version - 28/07/2014 - v1.4
     /// </summary>
     public class ScoreSprite : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -133,10 +133,11 @@ namespace Space_Invaders
                 }
                 else
                 {
+                    /*
                     if (score > highScore)
                     {
                         highScoreObject.WriteHighScore(score);       
-                    }
+                    }*/
                     //endOfGame = true;//So the Game Over Menu will show
                     game.SetGameState(Game1.GameState.GameOverMenu);
                 }
@@ -150,6 +151,11 @@ namespace Space_Invaders
         public bool GetGameOver()
         {
             return gameOver;
+        }
+
+        public void writeHighScore(string initials, int score)
+        {
+            highScoreObject.WriteHighScore(initials, score);
         }
 
         /// <summary>

@@ -10,7 +10,7 @@ namespace Space_Invaders
     /// A class will allow the game to keep track of a highscore.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 25/05/2013
+    /// Version - 28/07/2014 - v1.1
     /// </summary>
     class HighScore
     {
@@ -49,11 +49,11 @@ namespace Space_Invaders
         /// Writes the highscore to the file.
         /// </summary>
         /// <param name="highScore">The highscore that will be written to the file</param>
-        public void WriteHighScore(int highScore)
+        public void WriteHighScore(string initials, int highScore)
         {
             using (StreamWriter streamW = new StreamWriter(new FileStream(FILENAME, FileMode.OpenOrCreate, FileAccess.Write)))
             {
-                streamW.WriteLine("AAA," + highScore);
+                streamW.WriteLine(initials + "," + highScore);
             }
         }
     }

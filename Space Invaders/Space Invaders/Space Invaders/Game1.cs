@@ -15,7 +15,7 @@ namespace Space_Invaders
     /// This is the main type for your game
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 26/07/2014 - v1.2
+    /// Version - 28/07/2014 - v1.3
     /// </summary>
     /// 
 
@@ -214,6 +214,11 @@ namespace Space_Invaders
         public void SetGameState(GameState gs)
         {
             currentGameState = gs;
+        }
+
+        public void writeHighScore(string initials, int gameScore)
+        {
+            score.writeHighScore(initials, gameScore);
         }
 
         /// <summary>

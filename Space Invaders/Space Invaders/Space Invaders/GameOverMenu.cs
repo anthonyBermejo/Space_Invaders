@@ -40,7 +40,6 @@ namespace Space_Invaders
         private char[] playerInitials;
         private string initialString;
         private int initialCtr; //Position 0,1, or 2 of the char array containing initials
-        private bool newHighScore;
         private bool lockControls; //If true, will override controls so that input goes towards initials, not game movements
         private bool releaseControls; //When initials are done being entered, will allow lockControls to switch states
 
@@ -73,8 +72,8 @@ namespace Space_Invaders
 
             playerInitials = new char[3] {'_', '_', '_'};
             initialCtr = 0;
-            newHighScore = false;
             lockControls = false;
+            releaseControls = false;
         }
 
         public override void Initialize()
@@ -129,6 +128,8 @@ namespace Space_Invaders
                                 {
                                     timer.Start();
                                     initialCtr = 0;
+                                    lockControls = false;
+                                    releaseControls = false;
                                     game.restartGame();
                                     break;
                                 }
@@ -155,7 +156,7 @@ namespace Space_Invaders
 
                
                 //Will not accept key input if game controls are active
-                if (!releaseControls)
+                if (lockControls)
                 {
                     acceptHighScoreInitials();
                 } 
@@ -183,15 +184,12 @@ namespace Space_Invaders
                         screenHeight / 3), Color.White);
                     spriteBatch.DrawString(font, "YOUR SCORE: " + score, new Vector2((screenWidth / 2) - (font.MeasureString("YOUR SCORE: " + score).X / 2),
                         screenHeight / 3 - font.LineSpacing + padding), Color.White);
-
-                    newHighScore = false;
                 }
                 else
                 {
                     spriteBatch.DrawString(font, "NEW HIGH SCORE: " + score, new Vector2((screenWidth / 2) - (font.MeasureString("NEW HIGH SCORE: " + score).X / 2),
                         (screenHeight / 3)), Color.White);
 
-                    newHighScore = true;
                     if(!releaseControls)
                         lockControls = true;
                 }

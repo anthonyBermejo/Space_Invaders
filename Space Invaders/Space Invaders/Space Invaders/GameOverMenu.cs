@@ -183,14 +183,14 @@ namespace Space_Invaders
                 if (score <= highScore)
                 {
                     spriteBatch.DrawString(font, "HIGH SCORE: " + highScore, new Vector2((screenWidth / 2) - (font.MeasureString("HIGH SCORE: " + highScore).X / 2),
-                        screenHeight / 3), Color.White);
+                        screenHeight / 3 + 20), Color.White);
                     spriteBatch.DrawString(font, "YOUR SCORE: " + score, new Vector2((screenWidth / 2) - (font.MeasureString("YOUR SCORE: " + score).X / 2),
-                        screenHeight / 3 - font.LineSpacing + padding), Color.White);
+                        screenHeight / 3 - font.LineSpacing + padding + 20), Color.White);
                 }
                 else
                 {
                     spriteBatch.DrawString(font, "NEW HIGH SCORE: " + score, new Vector2((screenWidth / 2) - (font.MeasureString("NEW HIGH SCORE: " + score).X / 2),
-                        (screenHeight / 3)), Color.White);
+                        (screenHeight / 3 + 20)), Color.White);
                     spriteBatch.DrawString(font, initialStringDisplay, new Vector2((screenWidth / 2) - (font.MeasureString(initialStringDisplay).X / 2), (screenHeight / 2)), Color.White);
 
                     if(!releaseControls)

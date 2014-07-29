@@ -349,6 +349,7 @@ namespace Space_Invaders
             level = 1;
             alienLevel = 1;
             resetAlienSquad();
+            resetMothership();
         }
 
         public SoundState getAlienSoundState()
@@ -398,7 +399,11 @@ namespace Space_Invaders
                 }
                 //Spawns mothership once a certain number are killed
                 if (killedCount == (alienSquad.Length / 2))
+                {
+                    mothershipSprite.RandomizeMothershipSpawn();
+                    mothershipSprite.SetAlienState(AlienState.ACTIVE);
                     mothershipSprite.SetSpawnMother(true);
+                }
             }
 
             else
@@ -427,7 +432,7 @@ namespace Space_Invaders
 
         private void resetAlienSquad()
         {
-            Console.WriteLine("resetAlienSquad - begin" + alienLevel);
+            Console.WriteLine("resetLevelAlienSquad - begin" + alienLevel);
             Alien.speed = 0.5f;
             killedCount = 0;
 
@@ -435,9 +440,8 @@ namespace Space_Invaders
             resetAlienSquadTexture();
             drawAlienSquad();
             setAlienSquadToActive(); 
-            resetMothership();
 
-            Console.WriteLine("resetAlienSquad - end" + alienLevel);
+            Console.WriteLine("resetLevelAlienSquad - end" + alienLevel);
         }
 
         /// <summary>

@@ -13,7 +13,7 @@ namespace Space_Invaders
     /// Class defining the Game Over Menu of the game.
     /// 
     /// Author Patrick Nicoll
-    /// Version 26/07/2014 - v1.2
+    /// Version 29/07/2014 - v1.3
     /// </summary>
     class GameOverMenu : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -38,7 +38,8 @@ namespace Space_Invaders
         private int score;
         private int highScore;
         private char[] playerInitials;
-        private string initialString;
+        private string initialString; //String containing the players initials
+        private string initialStringDisplay; // String containing what is displayed on screen for player initials
         private int initialCtr; //Position 0,1, or 2 of the char array containing initials
         private bool lockControls; //If true, will override controls so that input goes towards initials, not game movements
         private bool releaseControls; //When initials are done being entered, will allow lockControls to switch states
@@ -71,6 +72,7 @@ namespace Space_Invaders
             timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimedEvent);
 
             playerInitials = new char[3] {'_', '_', '_'};
+            initialStringDisplay = "_ _ _";
             initialCtr = 0;
             lockControls = false;
             releaseControls = false;
@@ -189,6 +191,7 @@ namespace Space_Invaders
                 {
                     spriteBatch.DrawString(font, "NEW HIGH SCORE: " + score, new Vector2((screenWidth / 2) - (font.MeasureString("NEW HIGH SCORE: " + score).X / 2),
                         (screenHeight / 3)), Color.White);
+                    spriteBatch.DrawString(font, initialStringDisplay, new Vector2((screenWidth / 2) - (font.MeasureString(initialStringDisplay).X / 2), (screenHeight / 2)), Color.White);
 
                     if(!releaseControls)
                         lockControls = true;
@@ -199,7 +202,7 @@ namespace Space_Invaders
 
                 for (int i = 0; i < menuItems.Count; i++)
                 {
-                    if (i == selected)
+                    if (i == selected && lockControls == false)
                     {
                         FlashTimerControl();  //Calls method to produce the text flashing effect
                         color = selectedColor;
@@ -207,7 +210,7 @@ namespace Space_Invaders
                     else
                         color = Color.White;
                     spriteBatch.DrawString(font, menuItems[i], new Vector2((screenWidth / 2) - (font.MeasureString(menuItems[i]).X / 2),
-                         (screenHeight / 2) - (font.LineSpacing * menuItems.Count / 2) + ((font.LineSpacing + padding) * i)), color);
+                         (screenHeight / 2 + 90) + (font.LineSpacing * menuItems.Count / 2) + ((font.LineSpacing + padding) * i)), color);
                 }
                 spriteBatch.End();
             }
@@ -526,6 +529,25 @@ namespace Space_Invaders
                 game.writeHighScore(initialString, score);
                 lockControls = false;
                 releaseControls = true;
+            }
+
+            //Alters the player initial string for display
+            initialStringDisplay = ToString();
+
+            for (int i = 1; i < 6; i++)
+            {
+                initialStringDisplay = initialStringDisplay.Insert(i, " ");
+                i++;
+            }
+
+            switch (initialCtr)
+            {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
             }
 
             if (initialCtr > 2)

@@ -156,6 +156,7 @@ namespace Space_Invaders
                     }
                     else
                         color = Color.White;
+
                     spriteBatch.DrawString(font, menuItems[i], new Vector2((screenWidth / 2) - (font.MeasureString(menuItems[i]).X / 2),
                          ((screenHeight / 2) + 90) + (font.LineSpacing * menuItems.Count / 2) + ((font.LineSpacing + padding) * i)), color);
                 }

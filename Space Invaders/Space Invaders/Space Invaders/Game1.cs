@@ -72,6 +72,8 @@ namespace Space_Invaders
         /// </summary>
         protected override void Initialize()
         {
+            setWindowPosition();
+
             //Creates the main menu
             mainMenu = new MainMenu(this);
 
@@ -348,5 +350,27 @@ namespace Space_Invaders
             SetGameState(GameState.Playing);
             
         }
+
+        /// <summary>
+        /// Set inital window position of game
+        /// </summary>
+        private void setWindowPosition()
+        {
+            int xPosition = 0;
+            int yPosition = 0;
+
+            // get width and height of screen/monitor
+            int monitorWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            int monitorHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+
+            // center the game window 
+            xPosition = (monitorWidth / 2) - (screenWidth / 2);
+            yPosition = 50;
+
+            // set new game window location
+            System.Windows.Forms.Form form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(Window.Handle);
+            form.Location = new System.Drawing.Point(xPosition, yPosition);
+        }
+
     }
 }

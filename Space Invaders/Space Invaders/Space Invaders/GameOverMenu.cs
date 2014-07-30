@@ -39,7 +39,9 @@ namespace Space_Invaders
         private int highScore;
         private char[] playerInitials;
         private string initialString; //String containing the players initials
-        private string initialStringDisplay; // String containing what is displayed on screen for player initials
+        private string initialDisplay1;
+        private string initialDisplay2;
+        private string initialDisplay3;
         private int initialCtr; //Position 0,1, or 2 of the char array containing initials
         private bool lockControls; //If true, will override controls so that input goes towards initials, not game movements
         private bool releaseControls; //When initials are done being entered, will allow lockControls to switch states
@@ -72,7 +74,9 @@ namespace Space_Invaders
             timer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimedEvent);
 
             playerInitials = new char[3] {'_', '_', '_'};
-            initialStringDisplay = "_ _ _";
+            initialDisplay1 = "_";
+            initialDisplay2 = "_";
+            initialDisplay3 = "_";
             initialCtr = 0;
             lockControls = false;
             releaseControls = false;
@@ -121,7 +125,7 @@ namespace Space_Invaders
                     }
 
                     //Checks for input from user that represents 'enter'
-                    if (CheckKeyboard(Keys.Enter) || CheckKeyboard(Keys.Space))
+                    if (CheckKeyboard(Keys.Enter))
                     {
                         switch (selected)
                         {
@@ -191,7 +195,18 @@ namespace Space_Invaders
                 {
                     spriteBatch.DrawString(font, "NEW HIGH SCORE: " + score, new Vector2((screenWidth / 2) - (font.MeasureString("NEW HIGH SCORE: " + score).X / 2),
                         (screenHeight / 3 + 20)), Color.White);
-                    spriteBatch.DrawString(font, initialStringDisplay, new Vector2((screenWidth / 2) - (font.MeasureString(initialStringDisplay).X / 2), (screenHeight / 2)), Color.White);
+
+                    if (initialCtr == 1 && lockControls == true)
+                    {
+                        FlashTimerControl();  //Calls method to produce the text flashing effect
+                        color = selectedColor;
+                    }
+                    else
+                        color = Color.White;
+
+                    spriteBatch.DrawString(font, initialDisplay1, new Vector2((screenWidth / 2) - (font.MeasureString("  ").X), (screenHeight / 2)), Color.White);
+                    spriteBatch.DrawString(font, initialDisplay2, new Vector2((screenWidth / 2), (screenHeight / 2)), Color.White);
+                    spriteBatch.DrawString(font, initialDisplay3, new Vector2((screenWidth / 2) + (font.MeasureString("  ").X), (screenHeight / 2)), Color.White);
 
                     if(!releaseControls)
                         lockControls = true;
@@ -532,13 +547,9 @@ namespace Space_Invaders
             }
 
             //Alters the player initial string for display
-            initialStringDisplay = ToString();
-
-            for (int i = 1; i < 6; i++)
-            {
-                initialStringDisplay = initialStringDisplay.Insert(i, " ");
-                i++;
-            }
+            initialDisplay1 = playerInitials[0] + "";
+            initialDisplay2 = playerInitials[1] + "";
+            initialDisplay3 = playerInitials[2] + "";
 
             switch (initialCtr)
             {

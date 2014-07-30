@@ -235,7 +235,7 @@ namespace Space_Invaders
             score += points;
             extraLifeAccumulator += points;
 
-            if ((extraLifeAccumulator / 200) >= 1)
+            if ((extraLifeAccumulator / 5000) >= 1)
             {
                 extraLifeAccumulator -= 5000;
                 lives++;

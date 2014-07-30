@@ -58,7 +58,7 @@ namespace Space_Invaders
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 800;
-            graphics.PreferredBackBufferHeight = 630;
+            graphics.PreferredBackBufferHeight = 700;
             this.screenWidth = graphics.PreferredBackBufferWidth;
             this.screenHeight = graphics.PreferredBackBufferHeight;
             Content.RootDirectory = "Content";

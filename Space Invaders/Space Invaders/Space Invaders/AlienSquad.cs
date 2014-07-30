@@ -77,7 +77,7 @@ namespace Space_Invaders
             this.bomb = bomb;
             this.mothershipSprite = mothershipSprite;
             this.playerSprite = playerSprite;
-            dir = Direction.LEFT;
+            dir = Direction.RIGHT;
            
             alienSquad = new AlienSprite[3, 8];
 
@@ -215,7 +215,7 @@ namespace Space_Invaders
 
             if (game.GetGameState() == Game1.GameState.Playing)
             {
-                fireTime = 120;
+                fireTime = 60;
 
                 for (int ctr1 = 0; ctr1 < alienSquad.GetLength(0); ctr1++)
                     for (int ctr2 = 0; ctr2 < alienSquad.GetLength(1); ctr2++)
@@ -280,9 +280,6 @@ namespace Space_Invaders
 
         private void drawAlienSquad()
         {
-            Console.WriteLine("drawAlienSquad - begin" + alienLevel);
-            Console.WriteLine("calculation" + alienHeight * alienLevel);
-
             // Calling the SetPosition method to set the position of each alien
             alienWidthSpacing = alienWidth * 3;
             alienSquad[0, 0].SetPosition(alienWidth, alienHeight * alienLevel);
@@ -312,9 +309,6 @@ namespace Space_Invaders
                 alienSquad[2, ctr].SetPosition(alienWidthSpacing, alienSquad[1, 0].GetBoundary().Bottom + 5);
                 alienWidthSpacing += alienWidth * 2;
             }
-
-            Console.WriteLine("drawAlienSquad - end" + alienLevel);
-            Console.WriteLine("calculation" + alienHeight * alienLevel);
         }
 
         /// <summary>
@@ -391,11 +385,9 @@ namespace Space_Invaders
                 //Resets squad if all are killed
                 if (killedCount == alienSquad.Length)
                 {
-                    Console.WriteLine("kill alien - before increment " + alienLevel);
                     level++;
                     alienLevel++;
                     resetAlienSquad();
-                    Console.WriteLine("kill alien - after reset " + alienLevel);
                 }
                 //Spawns mothership once a certain number are killed
                 if (killedCount == (alienSquad.Length / 2))
@@ -432,7 +424,6 @@ namespace Space_Invaders
 
         private void resetAlienSquad()
         {
-            Console.WriteLine("resetLevelAlienSquad - begin" + alienLevel);
             Alien.speed = 0.5f;
             killedCount = 0;
 
@@ -440,8 +431,6 @@ namespace Space_Invaders
             resetAlienSquadTexture();
             drawAlienSquad();
             setAlienSquadToActive(); 
-
-            Console.WriteLine("resetLevelAlienSquad - end" + alienLevel);
         }
 
         /// <summary>

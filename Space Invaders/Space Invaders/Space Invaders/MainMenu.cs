@@ -13,7 +13,7 @@ namespace Space_Invaders
     /// Class defining the main menu component of the game.
     /// 
     /// Author Patrick Nicoll
-    /// Version 26/07/2014 - v1.3
+    /// Version 31/07/2014 - v1.4
     /// </summary>
     public class MainMenu : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -55,6 +55,7 @@ namespace Space_Invaders
 
             //Add each menu item to the list
             menuItems.Add("New Game");
+            menuItems.Add("High Scores");
             menuItems.Add("Exit");
 
             //Initialize font color to white and flash timer to 0
@@ -130,8 +131,15 @@ namespace Space_Invaders
                                 break;
                             }
                         case 1:
-                            game.SetGameState(Game1.GameState.Exit);
-                            break;
+                            {
+                                game.SetGameState(Game1.GameState.HighScores);
+                                break;
+                            }
+                        case 2:
+                            {
+                                game.SetGameState(Game1.GameState.Exit);
+                                break;
+                            }
                     }
                 }
 

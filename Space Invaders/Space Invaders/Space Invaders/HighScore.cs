@@ -10,17 +10,37 @@ namespace Space_Invaders
     /// A class will allow the game to keep track of a highscore.
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 28/07/2014 - v1.1
+    /// Version - 31/07/2014 - v1.2
     /// </summary>
     class HighScore
     {
+        private string[] highScoreArray;
+
         private const string FILENAME = @"highscore.txt";
 
         //Constructor
         public HighScore()
         {
+            highScoreArray = new string[20];
         }
 
+
+        public string[] ReadAllHighScores()
+        {
+            string line;
+            int i = 0;
+
+             using (StreamReader streamR = new StreamReader(new FileStream(FILENAME, FileMode.OpenOrCreate, FileAccess.Read)))
+             {
+                 while((line = streamR.ReadLine()) != null)
+                 {
+                     highScoreArray[i] = line.Substring(0,3);
+                     highScoreArray[i+1] = line.Substring(4);
+                     i += 2;
+                 }
+             }
+             return highScoreArray;
+        }
 
         /// <summary>
         /// Reads the value of highscore from the file.

@@ -25,6 +25,9 @@ namespace Space_Invaders
 
         private Color color;
         private Color selectedColor;  //Selected menu item's color
+        private Color color1;  //Colors pertaining to the players initials
+        private Color color2;
+        private Color color3;
         private int colorFlashTimer;  //Used to time color flash effect on selected menu item 
         private int padding;
 
@@ -196,17 +199,31 @@ namespace Space_Invaders
                     spriteBatch.DrawString(font, "NEW HIGH SCORE: " + score, new Vector2((screenWidth / 2) - (font.MeasureString("NEW HIGH SCORE: " + score).X / 2),
                         (screenHeight / 3 + 20)), Color.White);
 
-                    if (initialCtr == 1 && lockControls == true)
+                    color1 = Color.White;
+                    color2 = Color.White;
+                    color3 = Color.White;
+
+                    if (initialCtr == 0 && lockControls == true)
                     {
                         FlashTimerControl();  //Calls method to produce the text flashing effect
-                        color = selectedColor;
+                        color1 = selectedColor;
+                    }
+                    else if (initialCtr == 1 && lockControls == true)
+                    {
+                        FlashTimerControl();  //Calls method to produce the text flashing effect
+                        color2 = selectedColor;
+                    }
+                    else if (initialCtr == 2 && lockControls == true)
+                    {
+                        FlashTimerControl();  //Calls method to produce the text flashing effect
+                        color3 = selectedColor;
                     }
                     else
                         color = Color.White;
 
-                    spriteBatch.DrawString(font, initialDisplay1, new Vector2((screenWidth / 2) - (font.MeasureString("  ").X), (screenHeight / 2)), Color.White);
-                    spriteBatch.DrawString(font, initialDisplay2, new Vector2((screenWidth / 2), (screenHeight / 2)), Color.White);
-                    spriteBatch.DrawString(font, initialDisplay3, new Vector2((screenWidth / 2) + (font.MeasureString("  ").X), (screenHeight / 2)), Color.White);
+                    spriteBatch.DrawString(font, initialDisplay1, new Vector2((screenWidth / 2) - (font.MeasureString("  ").X), (screenHeight / 2)), color1);
+                    spriteBatch.DrawString(font, initialDisplay2, new Vector2((screenWidth / 2), (screenHeight / 2)), color2);
+                    spriteBatch.DrawString(font, initialDisplay3, new Vector2((screenWidth / 2) + (font.MeasureString("  ").X), (screenHeight / 2)), color3);
 
                     if(!releaseControls)
                         lockControls = true;

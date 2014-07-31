@@ -15,7 +15,7 @@ namespace Space_Invaders
     /// This is the main type for your game
     /// 
     /// Authors - Anthony Bermejo, Venelin Koulaxazov, Patrick Nicoll
-    /// Version - 28/07/2014 - v1.3
+    /// Version - 31/07/2014 - v1.4
     /// </summary>
     /// 
 
@@ -26,6 +26,7 @@ namespace Space_Invaders
         public GamerServicesComponent GamerServices;
         private MainMenu mainMenu;
         private GameOverMenu gameOverMenu;
+        private HighScoreDisplay hsDisplay;
         private Starfield starfield;
         private SpriteBatch spriteBatch;
         private PlayerSprite playerSprite;
@@ -49,6 +50,7 @@ namespace Space_Invaders
             Paused,
             Playing,
             GameOverMenu,
+            HighScores,
             Exit
         }
         GameState currentGameState = GameState.MainMenu;
@@ -80,6 +82,8 @@ namespace Space_Invaders
             //Creates the game over menu
             gameOverMenu = new GameOverMenu(this);
 
+            hsDisplay = new HighScoreDisplay(this, screenHeight, screenWidth);
+
             //Generates the starfield
             starfield = new Starfield(this, screenHeight);
 
@@ -96,6 +100,7 @@ namespace Space_Invaders
             Components.Add(starfield);
             Components.Add(mainMenu);
             Components.Add(gameOverMenu);
+            Components.Add(hsDisplay);
             
 
             Components.Add(laser);
@@ -184,6 +189,11 @@ namespace Space_Invaders
             {
                 base.Update(gameTime);
             }
+        }
+
+        public string[] getAllHighScores()
+        {
+            return score.getAllHighScores();
         }
 
         /// <summary>
